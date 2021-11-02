@@ -34,7 +34,7 @@
 1. Create an Issue. 
 2. Create a Branch for that issue. Name the branch "issue/#" where # is issue number.
 3. Push your commits to the branch.
-4. Pull Request.
+4. Pull Request. Write "Resolves #%" where % is the number of the issue in the pull request comment.
 5. Wait for code review.
 
 **Naming conventions**

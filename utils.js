@@ -39,3 +39,20 @@ function gameOver(ctx) {
     ctx.fillStyle = oldStyle;
     ctx.font = oldFont
 }
+
+function wrapRange(value, lowBound, highBound) {
+    while (value < lowBound) {
+	value += (highBound - lowBound);
+    }
+    while (value > highBound) {
+	value -= (highBound - lowBound);
+    }
+    return value;
+}
+
+// RANDOMNESS
+// ==========
+
+function randRange(min, max) {
+    return Math.floor(min + Math.random() * (max - min));
+}

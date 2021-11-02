@@ -38,6 +38,8 @@
 5. Wait for code review.
 
 **Naming conventions**
+
 Issues should be named starting with: "Fix/Add" 
+
 Branches should be named: "issue/#" where # is the issue number.
 

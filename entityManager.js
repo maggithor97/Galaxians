@@ -17,6 +17,9 @@ var gapBetweenAliens = 7;
 var COLUMNS = 8;
 var ROWS = 6;
 
+const KEY_A = keyCode("A");
+const KEY_D = keyCode("D");
+
 var entityManager = {
 
     // "PRIVATE" DATA
@@ -106,7 +109,7 @@ var entityManager = {
 
     render: function (ctx) {
 
-        console.log(this._aliens)
+        //console.log(this._aliens)
         this._aliens.render(ctx);
 
         this._categories.forEach(categorie => {

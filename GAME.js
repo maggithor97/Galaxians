@@ -22,11 +22,36 @@ function initialize() {
     let offset = (g_sprites.ship.scale * g_sprites.ship.sheetCoords.default.size.h) * 1.5;
     let margin = 4;
     entityManager.generateShip({
-        cx : g_canvas.width / 2,
-        cy : g_canvas.height - offset - margin,
-        scale : g_scale
+        cx: g_canvas.width / 2,
+        cy: g_canvas.height - offset - margin,
+        scale: g_scale
     });
-    
+
+    var aliens = [
+        [3, 3, 3, 3, 3, 3, 3, 3],
+        [2, 2, 2, 2, 2, 2, 2, 2],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    var gapFromWall = 40;
+    var gapBetweenAliens = 15;
+    var COLUMNS = 5;
+    var ROWS = 5;
+    entityManager.generateAliens({
+        aliens: aliens, // If aliens[i][j]===0 then it's it's dead else it's alive
+        alienWidth: Math.floor((document.getElementById("myCanvas").width - (2 * gapFromWall) - ((COLUMNS - 1) * gapBetweenAliens)) / COLUMNS),
+        alienHeight: 25,
+        rows: ROWS,
+        columns: COLUMNS,
+        gapBetweenAliens: gapBetweenAliens,     // In px
+        gapFromWall: gapFromWall,         // In px
+        gapFromTop: 40,
+        goingLeft: false
+    }
+    )
+
 }
 
 // =============
@@ -54,9 +79,9 @@ function gatherInputs() {
 // GAME-SPECIFIC UPDATE LOGIC
 
 function updateSimulation(du) {
-    
+
     processDiagnostics();
-    
+
     background.update(du);
     entityManager.update(du);
 
@@ -71,12 +96,12 @@ var g_useGravity = false;
 var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 
-var KEY_MIXED   = keyCode('M');;
+var KEY_MIXED = keyCode('M');;
 var KEY_GRAVITY = keyCode('G');
 var KEY_AVE_VEL = keyCode('V');
 var KEY_SPATIAL = keyCode('X');
 
-var KEY_HALT  = keyCode('H');
+var KEY_HALT = keyCode('H');
 var KEY_RESET = keyCode('R');
 
 var KEY_0 = keyCode('0');
@@ -104,17 +129,18 @@ function processDiagnostics() {
     if (eatKey(KEY_0)) entityManager.toggleRocks();
 
     if (eatKey(KEY_1)) entityManager.generateShip({
-        cx : g_mouseX,
-        cy : g_mouseY,
-        
-        sprite : g_sprites.ship});
+        cx: g_mouseX,
+        cy: g_mouseY,
+
+        sprite: g_sprites.ship
+    });
 
     if (eatKey(KEY_2)) entityManager.generateShip({
-        cx : g_mouseX,
-        cy : g_mouseY,
-        
-        sprite : g_sprites.ship2
-        });
+        cx: g_mouseX,
+        cy: g_mouseY,
+
+        sprite: g_sprites.ship2
+    });
 
     if (eatKey(KEY_K)) entityManager.killNearestShip(
         g_mouseX, g_mouseY);
@@ -153,11 +179,11 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-        sheet  : "./images/spritesheet_tp.png",
-        ship   : "https://notendur.hi.is/~pk/308G/images/ship.png",
-        ship2  : "https://notendur.hi.is/~pk/308G/images/ship_2.png",
-        rock   : "https://notendur.hi.is/~pk/308G/images/rock.png",
-        rocks  : "https://notendur.hi.is/~pk/308G/images/rocks.png"
+        sheet: "./images/spritesheet_tp.png",
+        ship: "https://notendur.hi.is/~pk/308G/images/ship.png",
+        ship2: "https://notendur.hi.is/~pk/308G/images/ship_2.png",
+        rock: "https://notendur.hi.is/~pk/308G/images/rock.png",
+        rocks: "https://notendur.hi.is/~pk/308G/images/rocks.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -167,17 +193,29 @@ var g_sprites = {};
 
 function preloadDone() {
 
-    g_sprites.ship  = new Sprite(g_images.sheet, g_scale, {
-        default : {
-            size : { w: 16, h: 16 },
-            frames : [[1,70]]
+    g_sprites.ship = new Sprite(g_images.sheet, g_scale, {
+        default: {
+            size: { w: 16, h: 16 },
+            frames: [[1, 70]]
         },
-        explosion : {
-            size : { w: 32, h: 32},
-            frames : [[1, 87], [34, 87], [67, 87], [100, 87]]
-        } 
+        explosion: {
+            size: { w: 32, h: 32 },
+            frames: [[1, 87], [34, 87], [67, 87], [100, 87]]
+        }
     });
-    
+
+    g_sprites.alien1 = new Sprite(g_images.sheet, g_scale, {
+        default: {
+            size: { w: 16, h: 16 },
+            frames: [[1, 1], [18, 1], [35, 1], [52, 1], [69, 1], [86, 1], [103, 1], [120, 1], [137, 1], [154, 1], [171, 1], [188, 1]]
+        },
+        explosion: {
+            size: { w: 16, h: 16 },
+            frames: [[61, 70], [78, 70], [95, 70], [112, 70]]
+        }
+
+    });
+
     /*
     g_sprites.ship2 = new Sprite(g_images.ship2);
     g_sprites.ship3 = new Sprite(g_images.ship3);
@@ -187,9 +225,9 @@ function preloadDone() {
     */
 
     g_sprites.bullet = new Sprite(g_images.sheet, g_scale, {
-        default : {
-            size : { w: 1, h: 3 },
-            frames : [[66, 196]]
+        default: {
+            size: { w: 1, h: 3 },
+            frames: [[66, 196]]
         }
     });
     //g_sprites.bullet.scale = 0.25;

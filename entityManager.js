@@ -1,6 +1,5 @@
 /*
 
-for push
 entityManager.js
 
 A module which handles arbitrary entity-management for "Asteroids"
@@ -23,11 +22,12 @@ with suitable 'data' and 'methods'.
 //
 /*jslint nomen: true, white: true, plusplus: true*/
 
+// Here, the fist row has 3 live
+
 
 var entityManager = {
 
 // "PRIVATE" DATA
-
 _rocks   : [],
 _bullets : [],
 _ships   : [],
@@ -114,6 +114,10 @@ generateRock : function(descr) {
 generateShip : function(descr) {
     this._ships.push(new Ship(descr));
 },
+generateAliens: function(descr) {
+    this._aliens = new Aliens(descr)
+    console.log(this._aliens)
+},
 
 killNearestShip : function(xPos, yPos) {
     var theShip = this._findNearestShip(xPos, yPos).theShip;
@@ -187,6 +191,7 @@ render: function(ctx) {
         }
         debugY += 10;
     }
+    this._aliens.render(ctx)
 }
 
 }

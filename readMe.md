@@ -12,9 +12,10 @@
 ### Timeplan:
 
 #### Week 1:
-- [ ] Player controls 
-- [ ] Enemy grid
-- [ ] Player shooting 
+- [x] Player controls 
+- [ ] <s>Enemy grid</s>
+- [ ] Player shooting
+- [x] Scrolling background 
 
 #### Week 2:
 - [ ] Collision 

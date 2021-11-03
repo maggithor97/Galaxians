@@ -1,85 +1,134 @@
-// A generic constructor which accepts an arbitrary descriptor object
+// ==========
+// SHIP STUFF
+// ==========
+
+"use strict";
+
+/* jshint browser: true, devel: true, globalstrict: true */
+
+/*
+0        1         2         3         4         5         6         7         8
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+*/
+
+
+// A generic contructor which accepts an arbitrary descriptor object
 function Ship(descr) {
-    for (var property in descr) {
-        this[property] = descr[property];
-    }
-}
 
-// Add these properties to the prototype, where they will server as
-// shared defaults, in the absence of an instance-specific overrides.
+    // Common inherited setup logic from Entity
+    this.setup(descr);
 
-Ship.prototype.halfWidth = 50;
-Ship.prototype.halfHeight = 10;
+    this.type = "Ship";
 
+    this.rememberResets();
+    
+    // Default sprite, if not otherwise specified
+    this.sprite = this.sprite || g_sprites.ship;
+    //this.sprite.scale = this.scale;
+
+    // Set normal drawing scale, and warp state off
+    //this._scale = 1;
+    //this._isWarping = false;
+};
+
+Ship.prototype = new Entity();
+
+Ship.prototype.rememberResets = function () {
+    // Remember my reset positions
+    this.reset_cx = this.cx;
+    this.reset_cy = this.cy;
+    this.reset_rotation = this.rotation;
+};
+
+//Ship.prototype.KEY_THRUST = 'W'.charCodeAt(0);
+//Ship.prototype.KEY_RETRO  = 'S'.charCodeAt(0);
+Ship.prototype.KEY_LEFT   = 'A'.charCodeAt(0);
+Ship.prototype.KEY_RIGHT  = 'D'.charCodeAt(0);
+
+Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
+
+// Initial, inheritable, default values
+Ship.prototype.rotation = 0;
+Ship.prototype.cx = 200;
+Ship.prototype.cy = 200;
+Ship.prototype.velX = 5;
+//Ship.prototype.velY = 5;
+Ship.prototype.launchVel = 2;
+//Ship.prototype.numSubSteps = 1;
+
+// HACKED-IN AUDIO (no preloading)
+//Ship.prototype.warpSound = new Audio(
+//    "sounds/shipWarp.ogg");
+    
 Ship.prototype.update = function (du) {
-    if (g_keys[this.GO_LEFT] && 
-        this.cx > this.halfWidth) {
-        this.cx -= 5 * du;
-    } else if (g_keys[this.GO_RIGHT] &&
-                this.cx < g_canvas.width - this.halfWidth) {
-        this.cx += 5 * du;
+    
+    // TODO: YOUR STUFF HERE! --- Unregister and check for death
+    spatialManager.unregister(this);
+
+    if (this._isDeadNow) return entityManager.KILL_ME_NOW;
+
+    if (keys[this.KEY_LEFT]) {
+        let nextX = this.cx - this.velX;
+        if (nextX > (this.sprite.width / 2))
+            this.cx -= this.velX * du;
     }
+    if (keys[this.KEY_RIGHT]){
+        let nextX = this.cx + this.velX;
+        if (nextX + (this.sprite.width / 2) < g_canvas.width)
+            this.cx += this.velX * du;
+    }
+    // Handle firing
+    this.maybeFireBullet();
+
+    // TODO: YOUR STUFF HERE! --- Warp if isColliding, otherwise Register
+    if (this.isColliding()) {
+        return;
+    }
+    
+    spatialManager.register(this);
+};
+
+Ship.prototype.maybeFireBullet = function () {
+
+    if (keys[this.KEY_FIRE]) {
+    
+        var dX = +Math.sin(this.rotation);
+        var dY = -Math.cos(this.rotation);
+        var launchDist = this.getRadius() * 1.2;
+        
+        var relVel = this.launchVel;
+        var relVelX = dX * relVel;
+        var relVelY = dY * relVel;
+
+        entityManager.fireBullet(
+           this.cx + dX * launchDist, this.cy + dY * launchDist,
+           this.velX + relVelX, this.velY + relVelY,
+           this.rotation);
+           
+    }
+    
+};
+
+Ship.prototype.getRadius = function () {
+    return (this.sprite.width / 2) * 0.9;
+};
+
+Ship.prototype.takeBulletHit = function () {
+    return;
+};
+
+Ship.prototype.reset = function () {
+    this.setPos(this.reset_cx, this.reset_cy);
+    this.rotation = this.reset_rotation;
+    
+    this.halt();
+};
+
+Ship.prototype.halt = function () {
+    this.velX = 0;
+    this.velY = 0;
 };
 
 Ship.prototype.render = function (ctx) {
-    // (cx, cy) is the centre; must offset it for drawing
-    if (!g_images.shipPicture) {
-        var oldStyle = ctx.fillStyle;
-        ctx.fillStyle = "#FFF338";
-        ctx.fillRect(this.cx - this.halfWidth,
-            this.cy - this.halfHeight,
-            this.halfWidth * 2,
-            this.halfHeight * 2);
-        ctx.fillStyle = oldStyle
-    } else {
-        ctx.drawImage(g_images.shipPicture,
-            this.cx - this.halfWidth,
-            this.cy - this.halfHeight,
-            this.halfWidth * 2,
-            this.halfHeight * 2);
-    }
-
+    this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, this.rotation);
 };
-
-
-Ship.prototype.collidesWith = function (prevX, prevY,
-    nextX, nextY, r) {
-    var shipMiddle = this.cx;
-    // Check Y coords
-    if (nextY + r >= this.cy - this.halfHeight &&
-        nextY - r <= this.cy + this.halfHeight) {
-        // Check X coords
-        if ((nextX <= shipMiddle + this.halfWidth &&
-            nextX >= shipMiddle - this.halfWidth)) {
-            // It's a hit!
-            return true;
-        }
-    }
-    // It's a miss!
-    return false;
-};
-
-
-// ==============
-// MOUSE HANDLING
-// ==============
-/*
-function handleMouse(evt) {
-
-    // If no button is being pressed, then ignore
-    if (!evt.which) return;
-
-    var x = evt.clientX - g_canvas.offsetLeft;
-    if (x > g_canvas.width - g_ship1.halfWidth) {
-        g_ship1.cx = g_canvas.width - g_ship1.halfWidth;
-    } else if (x < g_ship1.halfWidth) {
-        g_ship1.cx = g_ship1.halfWidth;
-    } else {
-        g_ship1.cx = x;
-    }
-}
-
-// Handle "down" and "move" events the same way.
-window.addEventListener("mousedown", handleMouse);
-window.addEventListener("mousemove", handleMouse);
-*/

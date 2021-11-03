@@ -20,7 +20,7 @@ function Starfield(descr) {
   }
 
   // Default sprite and scale, if not otherwise specified
-  this.scale = this.scale || 1;
+  this.scale  = this.scale  || 1;
   this.randomizeRGBInterval = 1 * SECS_TO_NOMINALS;
   this.randomizeRGBTimer = 0;
   this.cy = 0;
@@ -34,7 +34,7 @@ function Starfield(descr) {
 
 Starfield.prototype.getRGB = function () {
   let rgbs = [0, 0, 0, 127, 127, 127, 127, 255, 255, 255];
-  return rgbs[randRange(0, rgbs.length + 1)];
+  return rgbs[util.randRange(0, rgbs.length + 1)];
 };
 
 Starfield.prototype.init = function (du) {
@@ -55,7 +55,7 @@ Starfield.prototype.init = function (du) {
   // That is dark, faint or bright star.
   for (let i = 0; i < this.numStars; i++) {
     let rgb = this.getRGB();
-    let pixel = randRange(0, this.numPixels + 1);
+    let pixel = util.randRange(0, this.numPixels + 1);
     this.stars.push(pixel);
     
     this.sprite.data[4 * pixel + 0] = rgb;
@@ -78,13 +78,14 @@ Starfield.prototype.randomizeRGB = function () {
 Starfield.prototype.update = function (du) {
 
   this.cy += this.velY * du;
-  this.cy = wrapRange(this.cy, 0, g_canvas.height);
+  this.cy = util.wrapRange(this.cy, 0, g_canvas.height);
 
   this.randomizeRGBTimer += du;
     
 };
 
 Starfield.prototype.render = function (ctx) {
+  var origScale = this.sprite.scale;
   // pass my scale into the sprite, for drawing
   this.sprite.scale = this.scale;
 
@@ -103,7 +104,5 @@ let background = new Starfield({
   cy : 0,
   velY : 1,
   numStars : 100,
-  scale : 2
+  scale : g_scale
 });
-
-background.init();

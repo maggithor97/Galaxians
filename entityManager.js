@@ -1,129 +1,195 @@
-/// NOT in USE
+/*
+
+entityManager.js
+
+A module which handles arbitrary entity-management for "Asteroids"
+
+
+We create this module as a single global object, and initialise it
+with suitable 'data' and 'methods'.
+
+"Private" properties are denoted by an underscore prefix convention.
+
+*/
 
 
 "use strict";
 
-// Here, the fist row has 3 live
-var aliens = [
-    [3, 3, 3, 3, 3, 3, 3, 3],
-    [2, 2, 2, 2, 2, 2, 2, 2],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1]
-];
-var gapFromWall = 40;
-var gapBetweenAliens = 7;
-var COLUMNS = 8;
-var ROWS = 6;
 
-const KEY_A = keyCode("A");
-const KEY_D = keyCode("D");
+// Tell jslint not to complain about my use of underscore prefixes (nomen),
+// my flattening of some indentation (white), or my use of incr/decr ops 
+// (plusplus).
+//
+/*jslint nomen: true, white: true, plusplus: true*/
+
 
 var entityManager = {
 
-    // "PRIVATE" DATA
+// "PRIVATE" DATA
 
-    _aliens: new Aliens({
-        aliens: aliens, // If aliens[i][j]===0 then it's it's dead else it's alive
-        alienWidth: Math.floor((document.getElementById("myCanvas").width - (2 * gapFromWall) - ((COLUMNS - 1) * gapBetweenAliens)) / COLUMNS),
-        alienHeight: 15,
-        rows: ROWS,
-        columns: COLUMNS,
-        gapBetweenAliens: gapBetweenAliens,     // In px
-        gapFromWall: gapFromWall,         // In px
-        gapFromTop: 40
-    }),
+_rocks   : [],
+_bullets : [],
+_ships   : [],
 
-    _bullets: [],
-    _ships: [],         // It's an array so we can add more ships if we want
+_bShowRocks : true,
 
+// "PRIVATE" METHODS
 
+_generateRocks : function() {
+    var i,
+        NUM_ROCKS = 4;
 
-    // PUBLIC METHODS
-
-    // A special return value, used by other objects,
-    // to request the blessed release of death!
-    //
-    KILL_ME_NOW: -1,
-
-    // Some things must be deferred until after initial construction
-    // i.e. thing which need `this` to be defined.
-    //
-    deferredSetup: function () {
-        this._categories = [this._bullets, this._ships];
-    },
-
-    init: function () {
-
-        // I could have made some ships here too, but decided not to.
-
-        this.generateShip();
-    },
-
-    generateShip: function () {
-        var ship1 = new Ship({
-            cx: g_canvas.width / 2,
-            cy: g_canvas.height * 0.90,
-
-            GO_LEFT: KEY_A,
-            GO_RIGHT: KEY_D
-        });
-        this._ships.push(ship1);
-    },
-
-    fireBullet: function (cx, cy, velX, velY, rotation) {
-
-        // TODO: Implement this
-        var newBullet = new Bullet({
-            cx: cx,
-            cy: cy,
-            velX: velX,
-            velY: velY,
-            rotation: rotation
-        });
-        this._bullets.push(newBullet)
-
-    },
-
-    update: function (du) {
-
-        this._categories.forEach(categorie => {
-            
-            //  Updates bullets and removes dead bullets
-            if (categorie === this._bullets) {
-                for (var i = 0; i < categorie.length; i++) {
-                    var item = categorie[i];
-                    item.update(du)
-                    if (item.killMe) {
-                        this._bullets.splice(i, 1)
-                    }
-                }
-            } else { // Update everything else
-                categorie.forEach(item => {
-                    item.update(du)
-                })
-            }
-        });
-    },
-
-    render: function (ctx) {
-
-        //console.log(this._aliens)
-        this._aliens.render(ctx);
-
-        this._categories.forEach(categorie => {
-            categorie.forEach(item => {
-                item.render(ctx)
-            })
-
-        });
-
+    for (i = 0; i < NUM_ROCKS; ++i) {
+        this.generateRock();
     }
+},
+
+_findNearestShip : function(posX, posY) {
+    var closestShip = null,
+        closestIndex = -1,
+        closestSq = 1000 * 1000;
+
+    for (var i = 0; i < this._ships.length; ++i) {
+
+        var thisShip = this._ships[i];
+        var shipPos = thisShip.getPos();
+        var distSq = util.wrappedDistSq(
+            shipPos.posX, shipPos.posY, 
+            posX, posY,
+            g_canvas.width, g_canvas.height);
+
+        if (distSq < closestSq) {
+            closestShip = thisShip;
+            closestIndex = i;
+            closestSq = distSq;
+        }
+    }
+    return {
+        theShip : closestShip,
+        theIndex: closestIndex
+    };
+},
+
+_forEachOf: function(aCategory, fn) {
+    for (var i = 0; i < aCategory.length; ++i) {
+        fn.call(aCategory[i]);
+    }
+},
+
+// PUBLIC METHODS
+
+// A special return value, used by other objects,
+// to request the blessed release of death!
+//
+KILL_ME_NOW : -1,
+
+// Some things must be deferred until after initial construction
+// i.e. thing which need `this` to be defined.
+//
+deferredSetup : function () {
+    this._categories = [this._rocks, this._bullets, this._ships];
+},
+
+init: function() {
+    //this._generateRocks();
+    //this._generateShip();
+},
+
+fireBullet: function(cx, cy, velX, velY, rotation) {
+    this._bullets.push(new Bullet({
+        cx   : cx,
+        cy   : cy,
+        velX : velX,
+        velY : velY,
+
+        rotation : rotation
+    }));
+},
+
+generateRock : function(descr) {
+    this._rocks.push(new Rock(descr));
+},
+
+generateShip : function(descr) {
+    this._ships.push(new Ship(descr));
+},
+
+killNearestShip : function(xPos, yPos) {
+    var theShip = this._findNearestShip(xPos, yPos).theShip;
+    if (theShip) {
+        theShip.kill();
+    }
+},
+
+yoinkNearestShip : function(xPos, yPos) {
+    var theShip = this._findNearestShip(xPos, yPos).theShip;
+    if (theShip) {
+        theShip.setPos(xPos, yPos);
+    }
+},
+
+resetShips: function() {
+    this._forEachOf(this._ships, Ship.prototype.reset);
+},
+
+haltShips: function() {
+    this._forEachOf(this._ships, Ship.prototype.halt);
+},	
+
+toggleRocks: function() {
+    this._bShowRocks = !this._bShowRocks;
+},
+
+update: function(du) {
+
+    for (var c = 0; c < this._categories.length; ++c) {
+
+        var aCategory = this._categories[c];
+        var i = 0;
+
+        while (i < aCategory.length) {
+
+            var status = aCategory[i].update(du);
+
+            if (status === this.KILL_ME_NOW) {
+                // remove the dead guy, and shuffle the others down to
+                // prevent a confusing gap from appearing in the array
+                aCategory.splice(i,1);
+            }
+            else {
+                ++i;
+            }
+        }
+    }
+    
+    //if (this._rocks.length === 0) this._generateRocks();
+
+},
+
+render: function(ctx) {
+
+    var debugX = 10, debugY = 100;
+
+    for (var c = 0; c < this._categories.length; ++c) {
+
+        var aCategory = this._categories[c];
+
+        if (!this._bShowRocks && 
+            aCategory == this._rocks)
+            continue;
+
+        for (var i = 0; i < aCategory.length; ++i) {
+
+            aCategory[i].render(ctx);
+            //debug.text(".", debugX + i * 10, debugY);
+
+        }
+        debugY += 10;
+    }
+}
 
 }
 
 // Some deferred setup which needs the object to have been created first
 entityManager.deferredSetup();
 
-entityManager.init();

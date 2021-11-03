@@ -27,7 +27,7 @@ function render(ctx) {
     // I've pulled the clear out of `renderSimulation()` and into
     // here, so that it becomes part of our "diagnostic" wrappers
     //
-    if (g_doClear) clearCanvas(ctx);
+    if (g_doClear) util.clearCanvas(ctx);
     
     // The main purpose of the box is to demonstrate that it is
     // always deleted by the subsequent "undo" before you get to
@@ -35,7 +35,7 @@ function render(ctx) {
     //
     // i.e. double-buffering prevents flicker!
     //
-    if (g_doBox) fillBox(ctx, 200, 200, 50, 50, "red");
+    if (g_doBox) util.fillBox(ctx, 200, 200, 50, 50, "red");
     
     
     // The core rendering of the actual game / simulation
@@ -54,7 +54,7 @@ function render(ctx) {
             boxY = g_isUpdateOdd ? 100 : 200;
         
         // Draw flip-flop box
-        fillBox(ctx, boxX, boxY, 50, 50, "green");
+        util.fillBox(ctx, boxX, boxY, 50, 50, "green");
         
         // Display the current frame-counter in the box...
         ctx.fillText(g_frameCounter % 1000, boxX + 10, boxY + 20);

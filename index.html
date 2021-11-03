@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Galaxians</title>
+  </head>
+  <body>
 
-<head>
-  <meta charset="UTF-8">
-  <title>GALAXIANS!</title>
-</head>
+	<canvas id="myCanvas" width="448" height="512"
+		style="border: 1px solid black;">
+	Sorry, but your browser does not support the HTML5 canvas tag.
+	</canvas>
 
-<body>
+    <div id="output"></div>
 
-  <canvas id="myCanvas" width="448" height="512" style="border: 2px solid #000000;">
-    Sorry, but your browser does not support the HTML5 canvas tag.
-  </canvas>
+    <script src="globals.js"></script>
+    <script src="consts.js"></script>
+    <script src="util.js"></script>
+    <script src="keys.js"></script>
+    <script src="handleMouse.js"></script>
 
-  <div id="output"></div>
-  
+    <script src="spatialManager.js"></script>
+    <script src="entityManager.js"></script>
 
-  <script src="globals.js"></script>
-  <script src="utils.js"></script>
-  <script src="g_keys.js"></script>
-  <script src="fallingBrick.js"></script>
-  <script src="Ship.js"></script>
-  <script src="g_main.js"></script>
-  <script src="Starfield.js"></script>
-  <script src="update.js"></script>
-  <script src="render.js"></script>
-  <script src="Aliens.js"></script>
-  <script src="entityManager.js"></script>
-  <script src="GALAXIANS.js"></script>
+    <script src="Sprite.js"></script>
+    
+    <script src="Entity.js"></script>
+    <script src="Rock.js"></script>
+    <script src="Bullet.js"></script>
+    <script src="Ship.js"></script>
+    <script src="Starfield.js"></script>
 
+    <script src="update.js"></script>
+    <script src="render.js"></script>
 
-</body>
+    <script src="imagesPreload.js"></script>
+    <script src="main.js"></script>
 
+    <script src="GAME.js"></script>
+
+  </body>
 </html>

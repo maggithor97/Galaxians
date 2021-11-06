@@ -90,6 +90,9 @@ Ship.prototype.update = function (du) {
 
 Ship.prototype.maybeFireBullet = function () {
 
+    let bulletHeight = g_sprites.playerBullet.height;
+    entityManager.spawnPlayerBullet(this.cx, this.cy - this.getRadius() - bulletHeight);
+
     if (keys[this.KEY_FIRE]) {
     
         var dX = +Math.sin(this.rotation);
@@ -100,11 +103,8 @@ Ship.prototype.maybeFireBullet = function () {
         var relVelX = dX * relVel;
         var relVelY = dY * relVel;
 
-        entityManager.fireBullet(
-           this.cx + dX * launchDist, this.cy + dY * launchDist,
-           this.velX + relVelX, this.velY + relVelY,
-           this.rotation);
-           
+        entityManager.firePlayerBullet();
+    
     }
     
 };

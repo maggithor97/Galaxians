@@ -179,11 +179,7 @@ var g_images = {};
 function requestPreloads() {
 
     var requiredImages = {
-        sheet: "./images/spritesheet_tp.png",
-        ship: "https://notendur.hi.is/~pk/308G/images/ship.png",
-        ship2: "https://notendur.hi.is/~pk/308G/images/ship_2.png",
-        rock: "https://notendur.hi.is/~pk/308G/images/rock.png",
-        rocks: "https://notendur.hi.is/~pk/308G/images/rocks.png"
+        sheet: "./images/spritesheet_tp.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -216,15 +212,7 @@ function preloadDone() {
 
     });
 
-    /*
-    g_sprites.ship2 = new Sprite(g_images.ship2);
-    g_sprites.ship3 = new Sprite(g_images.ship3);
-    g_sprites.rock  = new Sprite(g_images.rock);
-    g_sprites.rocks = new Sprite(g_images.rocks);
-    g_sprites.rocks.processSpriteSheet(64, 64);
-    */
-
-    g_sprites.bullet = new Sprite(g_images.sheet, g_scale, {
+    g_sprites.playerBullet = new Sprite(g_images.sheet, g_scale, {
         default: {
             size: { w: 1, h: 3 },
             frames: [[66, 196]]

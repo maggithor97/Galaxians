@@ -18,7 +18,7 @@ function Bullet(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    this.type = "Bullet";
+    this.type = "playerBullet";
 
     // Make a noise when I am created (i.e. fired)
     //this.fireSound.volume = 0.2;
@@ -48,7 +48,7 @@ Bullet.prototype.velX = 1;
 Bullet.prototype.velY = 1;
 
 // Convert times from milliseconds to "nominal" time units.
-Bullet.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
+//Bullet.prototype.lifeSpan = 3000 / NOMINAL_UPDATE_INTERVAL;
 
 Bullet.prototype.update = function (du) {
 
@@ -57,19 +57,17 @@ Bullet.prototype.update = function (du) {
 
     if (this._isDeadNow) return entityManager.KILL_ME_NOW;
 
-    this.lifeSpan -= du;
-    if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
+    if (this.cy < 0 || this.cy > g_canvas.height) return entityManager.KILL_ME_NOW;
 
-    this.cx += this.velX * du;
+    if (this.velY === 0) {
+        let shipCoord = entityManager.getShipCoords();
+        this.cx = shipCoord.x;
+        return;
+    }
+
     this.cy += this.velY * du;
 
-    this.rotation += 1 * du;
-    this.rotation = util.wrapRange(this.rotation,
-                                   0, consts.FULL_CIRCLE);
 
-    this.wrapPosition();
-    
-    // TODO? NO, ACTUALLY, I JUST DID THIS BIT FOR YOU! :-)
     //
     // Handle collisions
     //
@@ -99,15 +97,16 @@ Bullet.prototype.takeBulletHit = function () {
 
 Bullet.prototype.render = function (ctx) {
 
-    var fadeThresh = Bullet.prototype.lifeSpan / 3;
-
-    if (this.lifeSpan < fadeThresh) {
-        ctx.globalAlpha = this.lifeSpan / fadeThresh;
+    if (this.type === "playerBullet") {
+        g_sprites.playerBullet.drawWrappedCentredAt(
+            ctx, this.cx, this.cy, this.rotation
+        );
+    } 
+    else {
+        g_sprites.enemyBullet.drawWrappedCentredAt(
+            ctx, this.cx, this.cy, this.rotation
+        );
     }
-
-    g_sprites.bullet.drawWrappedCentredAt(
-        ctx, this.cx, this.cy, this.rotation
-    );
 
     ctx.globalAlpha = 1;
 };

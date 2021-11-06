@@ -29,8 +29,9 @@ var entityManager = {
 
 // "PRIVATE" DATA
 _rocks   : [],
-_bullets : [],
+_enemy_bullets : [],
 _ships   : [],
+_player_bullet : [],
 
 _bShowRocks : true,
 
@@ -88,7 +89,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._rocks, this._bullets, this._ships];
+    this._categories = [this._rocks, this._enemy_bullets, this._ships, this._player_bullet];
 },
 
 init: function() {
@@ -96,15 +97,31 @@ init: function() {
     //this._generateShip();
 },
 
-fireBullet: function(cx, cy, velX, velY, rotation) {
-    this._bullets.push(new Bullet({
+fireEnemyBullet: function(cx, cy, velY) {
+    this._enemy_bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
-        velX : velX,
         velY : velY,
-
-        rotation : rotation
     }));
+},
+
+spawnPlayerBullet: function(cx, cy) {
+    // Spawn a new bullet only if the last one is dead.
+    if (this._player_bullet.length > 0) return;
+
+    this._player_bullet.push(new Bullet({
+        cx   : cx,
+        cy   : cy,
+        velY : 0,
+    }));
+},
+
+firePlayerBullet: function() {
+    this._player_bullet[0].velY = -5;
+},
+
+getShipCoords : function() {
+    return { x: this._ships[0].cx, y: this._ships[0].cy };
 },
 
 generateRock : function(descr) {
@@ -114,6 +131,7 @@ generateRock : function(descr) {
 generateShip : function(descr) {
     this._ships.push(new Ship(descr));
 },
+
 generateAliens: function(descr) {
     this._aliens = new Aliens(descr)
     console.log(this._aliens)
@@ -140,10 +158,6 @@ resetShips: function() {
 haltShips: function() {
     this._forEachOf(this._ships, Ship.prototype.halt);
 },	
-
-toggleRocks: function() {
-    this._bShowRocks = !this._bShowRocks;
-},
 
 update: function(du) {
 
@@ -178,10 +192,6 @@ render: function(ctx) {
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];
-
-        if (!this._bShowRocks && 
-            aCategory == this._rocks)
-            continue;
 
         for (var i = 0; i < aCategory.length; ++i) {
 

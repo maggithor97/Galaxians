@@ -18,7 +18,6 @@ function Sprite(image, scale, sheetCoords) {
     this.image = image;
     this.sheetCoords = sheetCoords;
 
-    console.log(scale);
     this.scale = scale;
     this.setAnimation("default");
     //this.activeAnimation = sheetCoords.default;

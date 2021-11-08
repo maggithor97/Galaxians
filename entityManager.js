@@ -28,21 +28,39 @@ with suitable 'data' and 'methods'.
 var entityManager = {
 
 // "PRIVATE" DATA
-_rocks   : [],
+_aliens   : [],
 _enemy_bullets : [],
 _ships   : [],
 _player_bullet : [],
 
-_bShowRocks : true,
-
 // "PRIVATE" METHODS
 
-_generateRocks : function() {
-    var i,
-        NUM_ROCKS = 4;
+_generateAliens : function() {
 
-    for (i = 0; i < NUM_ROCKS; ++i) {
-        this.generateRock();
+    let alienGridTypes = [
+        [0, 0, 0, 4, 0, 0, 4, 0, 0, 0],
+        [0, 0, 1, 1, 1, 1, 1, 1, 0, 0],
+        [0, 2, 2, 2, 2, 2, 2, 2, 2, 0],
+        [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+        [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+        [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
+    ];
+
+    for (let i = 0; i < alienGridTypes.length; i++) {
+        let row = alienGridTypes[i];
+
+        for (let j = 0; j < row.length; j++) {
+            let type = row[j];
+            if (type === 0) continue;
+
+            this.generateAlien({
+                x : j,
+                y : i,
+                type : type - 1,
+                scale : g_scale,
+                sprite : new Sprite(g_images.sheet, g_scale, g_sprites.aliens[type - 1])
+            });
+        }
     }
 },
 
@@ -89,11 +107,11 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 deferredSetup : function () {
-    this._categories = [this._rocks, this._enemy_bullets, this._ships, this._player_bullet];
+    this._categories = [this._aliens, this._enemy_bullets, this._ships, this._player_bullet];
 },
 
 init: function() {
-    //this._generateRocks();
+    this._generateAliens();
     //this._generateShip();
 },
 
@@ -102,6 +120,7 @@ fireEnemyBullet: function(cx, cy, velY) {
         cx   : cx,
         cy   : cy,
         velY : velY,
+        type : "enemyBullet"
     }));
 },
 
@@ -113,6 +132,7 @@ spawnPlayerBullet: function(cx, cy) {
         cx   : cx,
         cy   : cy,
         velY : 0,
+        type : "playerBullet"
     }));
 },
 
@@ -124,18 +144,20 @@ getShipCoords : function() {
     return { x: this._ships[0].cx, y: this._ships[0].cy };
 },
 
-generateRock : function(descr) {
-    this._rocks.push(new Rock(descr));
+generateAlien : function(descr) {
+    this._aliens.push(new Alien(descr));
 },
 
 generateShip : function(descr) {
     this._ships.push(new Ship(descr));
 },
 
+/*
 generateAliens: function(descr) {
     this._aliens = new Aliens(descr)
     console.log(this._aliens)
 },
+*/
 
 killNearestShip : function(xPos, yPos) {
     var theShip = this._findNearestShip(xPos, yPos).theShip;
@@ -181,6 +203,7 @@ update: function(du) {
         }
     }
     
+    //this._aliens.update(du);
     //if (this._rocks.length === 0) this._generateRocks();
 
 },
@@ -201,7 +224,7 @@ render: function(ctx) {
         }
         debugY += 10;
     }
-    this._aliens.render(ctx)
+    //this._aliens.render(ctx)
 }
 
 }

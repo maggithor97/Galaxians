@@ -18,8 +18,6 @@ function Bullet(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    this.type = "playerBullet";
-
     // Make a noise when I am created (i.e. fired)
     //this.fireSound.volume = 0.2;
     //this.fireSound.play();
@@ -101,8 +99,9 @@ Bullet.prototype.render = function (ctx) {
         g_sprites.playerBullet.drawWrappedCentredAt(
             ctx, this.cx, this.cy, this.rotation
         );
-    } 
-    else {
+    }
+    
+    if (this.type === "enemyBullet") {
         g_sprites.enemyBullet.drawWrappedCentredAt(
             ctx, this.cx, this.cy, this.rotation
         );

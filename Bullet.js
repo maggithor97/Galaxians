@@ -72,8 +72,16 @@ Bullet.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
-        if (canTakeHit) canTakeHit.call(hitEntity); 
-        return entityManager.KILL_ME_NOW;
+        if (canTakeHit) hitEntity.takeBulletHit(this);
+        if(this.type === "playerBullet") {
+            return entityManager.KILL_ME_NOW;
+        }
+        if(this.type === "enemyBullet") {
+            if(hitEntity.type === "ship" ||
+                hitEntity.type === "playerBullet") {
+                    return entityManager.KILL_ME_NOW;
+                }
+        }        
     }
     
     // TODO: YOUR STUFF HERE! --- (Re-)Register

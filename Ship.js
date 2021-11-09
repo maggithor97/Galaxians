@@ -114,6 +114,7 @@ Ship.prototype.getRadius = function () {
 };
 
 Ship.prototype.takeBulletHit = function () {
+    // todo: ship explodes
     return;
 };
 

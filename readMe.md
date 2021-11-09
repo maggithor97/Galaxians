@@ -14,15 +14,16 @@
 #### Week 1:
 - [x] Player controls 
 - [x] Enemy grid
-- [ ] Player shooting
+- [x] Player shooting
 - [x] Scrolling background 
 
 #### Week 2:
-- [ ] Collision 
-- [ ] Enemy shoots back
+- [x] Collision 
+- [x] Enemy shoots back
 - [x] Enemy movement
 
 #### Week 3
+- [ ] Player collision with enemy bullets
 - [ ] Individual enemies attacking
 - [ ] respawning enemies
 - [ ] Menues

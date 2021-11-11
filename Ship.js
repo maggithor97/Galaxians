@@ -33,6 +33,7 @@ function Ship(descr) {
     this.isExploding = false;
     this.animationInterval = 0.25 * SECS_TO_NOMINALS;
     this.animationTimer = 0;
+    this.extraLives = 3;
 };
 
 Ship.prototype = new Entity();
@@ -75,6 +76,10 @@ Ship.prototype.update = function (du) {
     if (this.isExploding) {
         if (this.sprite.frame === this.sprite.numFrames-1) {
             //return entityManager.KILL_ME_NOW;
+           this.extraLives -= 1;
+           this.sprite.setAnimation("default");
+           this.isExploding = false;
+           this.reset();
         }
         return;
       }
@@ -141,7 +146,8 @@ Ship.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.rotation = this.reset_rotation;
     
-    this.halt();
+    // unsure why this is called. I removed it because then the reset function can be used to respawn the player after death.
+    //this.halt();
 };
 
 Ship.prototype.halt = function () {

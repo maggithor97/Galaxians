@@ -228,8 +228,8 @@ function loadSprites() {
         let o = i * 17; // offset
         g_sprites.aliens.push({
             default: {
-                size: { w: 16, h: 16 },
-                frames: [[1, 1 + o], [18, 1 + o], [35, 1 + o], [52, 1 + o]]
+                size: { w: 14, h: 14 },
+                frames: [[53, 2 + o], [2, 2 + o], [53, 2 + o], [19, 2 + o]]
             },
             attacking: {
                 size: { w: 16, h: 16 },

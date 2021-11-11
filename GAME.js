@@ -248,18 +248,18 @@ function loadSprites() {
     // Alien type 3
     g_sprites.aliens.push({
         default: {
-            size: { w: 16, h: 16 },
-            frames: [[1, 52]]
+            size: { w: 14, h: 14 },
+            frames: [[2, 53]]
         },
         attacking: {
-            size: { w: 16, h: 16 },
-            frames: [[18, 52], [35, 52], [52, 52], 
-                     [69, 52], [86, 52], [103, 52] 
+            size: { w: 14, h: 14 },
+            frames: [[19, 53], [36, 53], [53, 53], 
+                     [70, 53], [87, 53], [104, 53] 
                     ]
         },
         explosion: {
-            size: { w: 16, h: 16 },
-            frames: [[61, 70], [78, 70], [95, 70], [112, 70]]
+            size: { w: 14, h: 14 },
+            frames: [[62, 71], [79, 71], [96, 71], [113, 71]]
         }}
     );
 

@@ -191,12 +191,12 @@ var g_sprites = {};
 function loadSprites() {
     g_sprites.ship = new Sprite(g_images.sheet, g_scale, {
         default: {
-            size: { w: 16, h: 16 },
-            frames: [[1, 70]]
+            size: { w: 14, h: 14 },
+            frames: [[2, 71]]
         },
         explosion: {
-            size: { w: 32, h: 32 },
-            frames: [[1, 87], [34, 87], [67, 87], [100, 87]]
+            size: { w: 30, h: 30 },
+            frames: [[2, 88], [34, 88], [67, 88], [100, 88]]
         }
     });
 

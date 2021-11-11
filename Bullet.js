@@ -76,8 +76,15 @@ Bullet.prototype.update = function (du) {
             hitEntity.type !== "playerBullet" &&
             hitEntity.type !== "enemyBullet") {
             hitEntity.takeBulletHit(this);
+        }
+        if (this.type === "enemyBullet" &&
+            hitEntity.type === "ship") {
             return entityManager.KILL_ME_NOW;
         }
+        if (this.type === "playerBullet" &&
+            hitEntity.type !== "enemyBullet") {
+                return entityManager.KILL_ME_NOW;
+            }
        
     }
 

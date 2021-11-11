@@ -29,6 +29,10 @@ function Ship(descr) {
     // Set normal drawing scale, and warp state off
     //this._scale = 1;
     //this._isWarping = false;
+
+    this.isExploding = false;
+    this.animationInterval = 0.25 * SECS_TO_NOMINALS;
+    this.animationTimer = 0;
 };
 
 Ship.prototype = new Entity();
@@ -66,6 +70,14 @@ Ship.prototype.update = function (du) {
     spatialManager.unregister(this);
 
     if (this._isDeadNow) return entityManager.KILL_ME_NOW;
+
+    this.animationTimer += du;
+    if (this.isExploding) {
+        if (this.sprite.frame === this.sprite.numFrames-1) {
+            //return entityManager.KILL_ME_NOW;
+        }
+        return;
+      }
 
     if (keys[this.KEY_LEFT]) {
         let nextX = this.cx - this.velX;
@@ -113,9 +125,16 @@ Ship.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
 };
 
-Ship.prototype.takeBulletHit = function () {
-    // todo: ship explodes
-    return;
+Ship.prototype.takeBulletHit = function (bullet) {
+     // Player can't hit itself.
+     if (bullet.type === "playerBullet") {
+        return;
+    }
+
+    this.sprite.setAnimation("explosion");
+    this.isExploding = true;
+    this.animationInterval = 0.10 * SECS_TO_NOMINALS
+    
 };
 
 Ship.prototype.reset = function () {
@@ -132,4 +151,9 @@ Ship.prototype.halt = function () {
 
 Ship.prototype.render = function (ctx) {
     this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, this.rotation);
+
+    if (this.animationTimer > this.animationInterval) {
+        this.sprite.nextFrame();
+        this.animationTimer = 0;
+    }
 };

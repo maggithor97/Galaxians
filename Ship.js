@@ -29,6 +29,11 @@ function Ship(descr) {
     // Set normal drawing scale, and warp state off
     //this._scale = 1;
     //this._isWarping = false;
+
+    this.isExploding = false;
+    this.animationInterval = 0.25 * SECS_TO_NOMINALS;
+    this.animationTimer = 0;
+    this.extraLives = 3;
 };
 
 Ship.prototype = new Entity();
@@ -66,6 +71,22 @@ Ship.prototype.update = function (du) {
     spatialManager.unregister(this);
 
     if (this._isDeadNow) return entityManager.KILL_ME_NOW;
+
+    this.animationTimer += du;
+    if (this.isExploding) {
+        if (this.sprite.frame === this.sprite.numFrames-1) {
+            //return entityManager.KILL_ME_NOW;
+           this.extraLives -= 1;
+           if(this.extraLives <= 0){
+               // Back to menu.
+               this.extraLives = 0;
+           }
+           this.sprite.setAnimation("default");
+           this.isExploding = false;
+           this.reset();
+        }
+        return;
+      }
 
     if (keys[this.KEY_LEFT]) {
         let nextX = this.cx - this.velX;
@@ -113,16 +134,24 @@ Ship.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
 };
 
-Ship.prototype.takeBulletHit = function () {
-    // todo: ship explodes
-    return;
+Ship.prototype.takeBulletHit = function (bullet) {
+     // Player can't hit itself.
+     if (bullet.type === "playerBullet") {
+        return;
+    }
+
+    this.sprite.setAnimation("explosion");
+    this.isExploding = true;
+    this.animationInterval = 0.10 * SECS_TO_NOMINALS
+    
 };
 
 Ship.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.rotation = this.reset_rotation;
     
-    this.halt();
+    // unsure why this is called. I removed it because then the reset function can be used to respawn the player after death.
+    //this.halt();
 };
 
 Ship.prototype.halt = function () {
@@ -132,4 +161,9 @@ Ship.prototype.halt = function () {
 
 Ship.prototype.render = function (ctx) {
     this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, this.rotation);
+
+    if (this.animationTimer > this.animationInterval) {
+        this.sprite.nextFrame();
+        this.animationTimer = 0;
+    }
 };

@@ -228,19 +228,19 @@ function loadSprites() {
         let o = i * 17; // offset
         g_sprites.aliens.push({
             default: {
-                size: { w: 16, h: 16 },
-                frames: [[1, 1 + o], [18, 1 + o], [35, 1 + o], [52, 1 + o]]
+                size: { w: 14, h: 14 },
+                frames: [[53, 2 + o], [2, 2 + o], [53, 2 + o], [19, 2 + o]]
             },
             attacking: {
-                size: { w: 16, h: 16 },
-                frames: [[69, 1 + o], [86, 1 + o], [103, 1 + o], 
-                         [120, 1 + o], [137, 1 + o], [154, 1 + o], 
-                         [171, 1 + o], [188, 1 + o]
+                size: { w: 14, h: 14 },
+                frames: [[70, 2 + o], [87, 2 + o], [104, 2 + o], 
+                         [121, 2 + o], [138, 2 + o], [155, 2 + o], 
+                         [172, 2 + o], [189, 2 + o]
                         ]
             },
             explosion: {
-                size: { w: 16, h: 16 },
-                frames: [[61, 70], [78, 70], [95, 70], [112, 70]]
+                size: { w: 14, h: 14 },
+                frames: [[62, 71], [79, 71], [96, 71], [113, 71]]
             }}
         );
     }
@@ -248,18 +248,18 @@ function loadSprites() {
     // Alien type 3
     g_sprites.aliens.push({
         default: {
-            size: { w: 16, h: 16 },
-            frames: [[1, 52]]
+            size: { w: 14, h: 14 },
+            frames: [[2, 53]]
         },
         attacking: {
-            size: { w: 16, h: 16 },
-            frames: [[18, 52], [35, 52], [52, 52], 
-                     [69, 52], [86, 52], [103, 52] 
+            size: { w: 14, h: 14 },
+            frames: [[19, 53], [36, 53], [53, 53], 
+                     [70, 53], [87, 53], [104, 53] 
                     ]
         },
         explosion: {
-            size: { w: 16, h: 16 },
-            frames: [[61, 70], [78, 70], [95, 70], [112, 70]]
+            size: { w: 14, h: 14 },
+            frames: [[62, 71], [79, 71], [96, 71], [113, 71]]
         }}
     );
 

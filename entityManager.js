@@ -145,7 +145,10 @@ getShipCoords : function() {
 },
 
 generateAlien : function(descr) {
-    this._aliens.push(new Alien(descr));
+    var newAlien = new Alien(descr);
+    //dexcr.x is the column number
+    newAlien.sprite.frame = (newAlien.sprite.frame + descr.x) % newAlien.sprite.numFrames;
+    this._aliens.push(newAlien);
 },
 
 generateShip : function(descr) {

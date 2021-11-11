@@ -146,9 +146,8 @@ getShipCoords : function() {
 
 generateAlien : function(descr) {
     var newAlien = new Alien(descr);
-    if(descr.x % 2 === 0) {
-        newAlien.sprite.nextFrame();
-    }
+    //dexcr.x is the column number
+    newAlien.sprite.frame = (newAlien.sprite.frame + descr.x) % newAlien.sprite.numFrames;
     this._aliens.push(newAlien);
 },
 

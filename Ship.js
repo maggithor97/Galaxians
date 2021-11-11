@@ -77,9 +77,9 @@ Ship.prototype.update = function (du) {
         if (this.sprite.frame === this.sprite.numFrames-1) {
             //return entityManager.KILL_ME_NOW;
            this.extraLives -= 1;
-           if(extraLives >= 0){
+           if(this.extraLives <= 0){
                // Back to menu.
-               extraLives = 0;
+               this.extraLives = 0;
            }
            this.sprite.setAnimation("default");
            this.isExploding = false;

@@ -5,9 +5,16 @@ function Aliens(descr) {
     for (var property in descr) {
         this[property] = descr[property];
     }
+
+    this.animationInterval = 0.25 * SECS_TO_NOMINALS;
+    this.animationTimer = 0;
 }
 
 var flying = 0;
+
+Aliens.prototype.update = function (du) {
+    this.animationTimer += du;
+}
 
 Aliens.prototype.render = function (ctx) {
     if(this.goingLeft) {
@@ -41,6 +48,10 @@ Aliens.prototype.render = function (ctx) {
                         break;
                 }
                 g_sprites.alien1.drawWrappedCentredAt(ctx, x, y);
+                if (this.animationTimer > this.animationInterval) {
+                    g_sprites.alien1.nextFrame();
+                    this.animationTimer = 0;
+                }
             }
         }
     }

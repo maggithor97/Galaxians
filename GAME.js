@@ -27,6 +27,7 @@ function initialize() {
         scale: g_scale
     });
 
+    /*
     var aliens = [
         [3, 3, 3, 3, 3, 3, 3, 3],
         [2, 2, 2, 2, 2, 2, 2, 2],
@@ -51,7 +52,7 @@ function initialize() {
         goingLeft: false
     }
     )
-
+    */
 }
 
 // =============
@@ -187,23 +188,27 @@ function requestPreloads() {
 
 var g_sprites = {};
 
-function preloadDone() {
-
+function loadSprites() {
     g_sprites.ship = new Sprite(g_images.sheet, g_scale, {
         default: {
-            size: { w: 16, h: 16 },
-            frames: [[1, 70]]
+            size: { w: 14, h: 14 },
+            frames: [[2, 71]]
         },
         explosion: {
-            size: { w: 32, h: 32 },
-            frames: [[1, 87], [34, 87], [67, 87], [100, 87]]
+            size: { w: 30, h: 30 },
+            frames: [[2, 88], [35, 88], [68, 88], [101, 88]]
         }
     });
 
+    /*
     g_sprites.alien1 = new Sprite(g_images.sheet, g_scale, {
         default: {
             size: { w: 16, h: 16 },
-            frames: [[1, 1], [18, 1], [35, 1], [52, 1], [69, 1], [86, 1], [103, 1], [120, 1], [137, 1], [154, 1], [171, 1], [188, 1]]
+            frames: [[1, 1], [18, 1], [35, 1], [52, 1]]
+        },
+        attacking: {
+            size: { w: 16, h: 16 },
+            frames: [[69, 1], [86, 1], [103, 1], [120, 1], [137, 1], [154, 1], [171, 1], [188, 1]]
         },
         explosion: {
             size: { w: 16, h: 16 },
@@ -211,6 +216,52 @@ function preloadDone() {
         }
 
     });
+    */
+
+    // We don't instantiate a Sprite for the aliens here, only populate
+    // an array with the sprite data. Instantiation is done in entityManager
+    // via the _generateAliens method.
+    g_sprites.aliens = [];
+
+    // Alien types 0-2
+    for (let i = 0; i < 3; i++) {
+        let o = i * 17; // offset
+        g_sprites.aliens.push({
+            default: {
+                size: { w: 14, h: 14 },
+                frames: [[53, 2 + o], [2, 2 + o], [53, 2 + o], [19, 2 + o]]
+            },
+            attacking: {
+                size: { w: 14, h: 14 },
+                frames: [[70, 2 + o], [87, 2 + o], [104, 2 + o], 
+                         [121, 2 + o], [138, 2 + o], [155, 2 + o], 
+                         [172, 2 + o], [189, 2 + o]
+                        ]
+            },
+            explosion: {
+                size: { w: 14, h: 14 },
+                frames: [[62, 71], [79, 71], [96, 71], [113, 71]]
+            }}
+        );
+    }
+
+    // Alien type 3
+    g_sprites.aliens.push({
+        default: {
+            size: { w: 14, h: 14 },
+            frames: [[2, 53]]
+        },
+        attacking: {
+            size: { w: 14, h: 14 },
+            frames: [[19, 53], [36, 53], [53, 53], 
+                     [70, 53], [87, 53], [104, 53] 
+                    ]
+        },
+        explosion: {
+            size: { w: 14, h: 14 },
+            frames: [[62, 71], [79, 71], [96, 71], [113, 71]]
+        }}
+    );
 
     g_sprites.playerBullet = new Sprite(g_images.sheet, g_scale, {
         default: {
@@ -218,7 +269,19 @@ function preloadDone() {
             frames: [[66, 196]]
         }
     });
+
+    g_sprites.enemyBullet = new Sprite(g_images.sheet, g_scale, {
+        default: {
+            size: { w: 1, h: 3 },
+            frames: [[139, 196]]
+        }
+    });
     //g_sprites.bullet.scale = 0.25;
+}
+
+function preloadDone() {
+
+    loadSprites();
 
     entityManager.init();
 

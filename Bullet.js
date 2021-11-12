@@ -18,8 +18,6 @@ function Bullet(descr) {
     // Common inherited setup logic from Entity
     this.setup(descr);
 
-    this.type = "playerBullet";
-
     // Make a noise when I am created (i.e. fired)
     //this.fireSound.volume = 0.2;
     //this.fireSound.play();
@@ -74,10 +72,22 @@ Bullet.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
-        if (canTakeHit) canTakeHit.call(hitEntity); 
-        return entityManager.KILL_ME_NOW;
+        if (canTakeHit && 
+            hitEntity.type !== "playerBullet" &&
+            hitEntity.type !== "enemyBullet") {
+            hitEntity.takeBulletHit(this);
+        }
+        if (this.type === "enemyBullet" &&
+            hitEntity.type === "ship") {
+            return entityManager.KILL_ME_NOW;
+        }
+        if (this.type === "playerBullet" &&
+            hitEntity.type !== "enemyBullet") {
+                return entityManager.KILL_ME_NOW;
+            }
+       
     }
-    
+
     // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
 
@@ -101,8 +111,9 @@ Bullet.prototype.render = function (ctx) {
         g_sprites.playerBullet.drawWrappedCentredAt(
             ctx, this.cx, this.cy, this.rotation
         );
-    } 
-    else {
+    }
+    
+    if (this.type === "enemyBullet") {
         g_sprites.enemyBullet.drawWrappedCentredAt(
             ctx, this.cx, this.cy, this.rotation
         );

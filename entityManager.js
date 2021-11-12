@@ -228,6 +228,9 @@ render: function(ctx) {
         debugY += 10;
     }
     //this._aliens.render(ctx)
+
+    //uncomment this to test the score advance table menu
+    //RenderScoreAT(g_ctx);
 }
 
 }

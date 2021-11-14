@@ -56,7 +56,7 @@ Ship.prototype.KEY_FIRE   = ' '.charCodeAt(0);
 Ship.prototype.rotation = 0;
 Ship.prototype.cx = 200;
 Ship.prototype.cy = 200;
-Ship.prototype.velX = 5;
+Ship.prototype.velX = 3;
 //Ship.prototype.velY = 5;
 Ship.prototype.launchVel = 2;
 //Ship.prototype.numSubSteps = 1;
@@ -79,6 +79,7 @@ Ship.prototype.update = function (du) {
            this.extraLives -= 1;
            if(this.extraLives <= 0){
                // Back to menu.
+               g_sceneManager.restart();
                this.extraLives = 0;
            }
            this.sprite.setAnimation("default");
@@ -89,12 +90,12 @@ Ship.prototype.update = function (du) {
       }
 
     if (keys[this.KEY_LEFT]) {
-        let nextX = this.cx - this.velX;
+        let nextX = this.cx - this.velX * du;
         if (nextX > (this.sprite.width / 2))
             this.cx -= this.velX * du;
     }
     if (keys[this.KEY_RIGHT]){
-        let nextX = this.cx + this.velX;
+        let nextX = this.cx + this.velX * du;
         if (nextX + (this.sprite.width / 2) < g_canvas.width)
             this.cx += this.velX * du;
     }

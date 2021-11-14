@@ -5,6 +5,8 @@
 var g_canvas = document.getElementById("myCanvas");
 var g_ctx = g_canvas.getContext("2d");
 
+var g_sceneManager = new SceneManager();
+
 /*
 0        1         2         3         4         5         6         7         8
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -17,6 +19,9 @@ var g_ctx = g_canvas.getContext("2d");
 
 function initialize() {
 
+    g_sceneManager.addScene("menu", g_menuScene);
+    g_sceneManager.addScene("game", g_gameScene);
+
     background.init();
 
     let offset = (g_sprites.ship.scale * g_sprites.ship.sheetCoords.default.size.h) * 1.5;
@@ -27,32 +32,6 @@ function initialize() {
         scale: g_scale
     });
 
-    /*
-    var aliens = [
-        [3, 3, 3, 3, 3, 3, 3, 3],
-        [2, 2, 2, 2, 2, 2, 2, 2],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1]
-    ];
-    var gapFromWall = 40;
-    var gapBetweenAliens = 15;
-    var COLUMNS = 5;
-    var ROWS = 5;
-    entityManager.generateAliens({
-        aliens: aliens, // If aliens[i][j]===0 then it's it's dead else it's alive
-        alienWidth: Math.floor((document.getElementById("myCanvas").width - (2 * gapFromWall) - ((COLUMNS - 1) * gapBetweenAliens)) / COLUMNS),
-        alienHeight: 25,
-        rows: ROWS,
-        columns: COLUMNS,
-        gapBetweenAliens: gapBetweenAliens,     // In px
-        gapFromWall: gapFromWall,         // In px
-        gapFromTop: 40,
-        goingLeft: false
-    }
-    )
-    */
 }
 
 // =============
@@ -83,43 +62,19 @@ function updateSimulation(du) {
 
     processDiagnostics();
 
-    background.update(du);
-    entityManager.update(du);
+    g_sceneManager.getActiveScene().updateSimulation(du);
 
-    // Prevent perpetual firing!
-    eatKey(Ship.prototype.KEY_FIRE);
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
 
-var g_allowMixedActions = true;
-var g_useGravity = false;
-var g_useAveVel = true;
 var g_renderSpatialDebug = false;
 
-var KEY_MIXED = keyCode('M');;
-var KEY_GRAVITY = keyCode('G');
-var KEY_AVE_VEL = keyCode('V');
 var KEY_SPATIAL = keyCode('X');
-
 var KEY_HALT = keyCode('H');
 var KEY_RESET = keyCode('R');
 
-var KEY_0 = keyCode('0');
-
-var KEY_1 = keyCode('1');
-var KEY_2 = keyCode('2');
-
-var KEY_K = keyCode('K');
-
 function processDiagnostics() {
-
-    if (eatKey(KEY_MIXED))
-        g_allowMixedActions = !g_allowMixedActions;
-
-    if (eatKey(KEY_GRAVITY)) g_useGravity = !g_useGravity;
-
-    if (eatKey(KEY_AVE_VEL)) g_useAveVel = !g_useAveVel;
 
     if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
 
@@ -127,24 +82,6 @@ function processDiagnostics() {
 
     if (eatKey(KEY_RESET)) entityManager.resetShips();
 
-    if (eatKey(KEY_0)) entityManager.toggleRocks();
-
-    if (eatKey(KEY_1)) entityManager.generateShip({
-        cx: g_mouseX,
-        cy: g_mouseY,
-
-        sprite: g_sprites.ship
-    });
-
-    if (eatKey(KEY_2)) entityManager.generateShip({
-        cx: g_mouseX,
-        cy: g_mouseY,
-
-        sprite: g_sprites.ship2
-    });
-
-    if (eatKey(KEY_K)) entityManager.killNearestShip(
-        g_mouseX, g_mouseY);
 }
 
 
@@ -164,8 +101,7 @@ function processDiagnostics() {
 
 function renderSimulation(ctx) {
 
-    background.render(ctx);
-    entityManager.render(ctx);
+    g_sceneManager.getActiveScene().renderSimulation(ctx);
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
 }
@@ -199,24 +135,6 @@ function loadSprites() {
             frames: [[2, 88], [35, 88], [68, 88], [101, 88]]
         }
     });
-
-    /*
-    g_sprites.alien1 = new Sprite(g_images.sheet, g_scale, {
-        default: {
-            size: { w: 16, h: 16 },
-            frames: [[1, 1], [18, 1], [35, 1], [52, 1]]
-        },
-        attacking: {
-            size: { w: 16, h: 16 },
-            frames: [[69, 1], [86, 1], [103, 1], [120, 1], [137, 1], [154, 1], [171, 1], [188, 1]]
-        },
-        explosion: {
-            size: { w: 16, h: 16 },
-            frames: [[61, 70], [78, 70], [95, 70], [112, 70]]
-        }
-
-    });
-    */
 
     // We don't instantiate a Sprite for the aliens here, only populate
     // an array with the sprite data. Instantiation is done in entityManager

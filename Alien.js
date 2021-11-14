@@ -19,7 +19,7 @@ function Alien(descr) {
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
   this.isExploding = false;
-  this.isAttacking = false;
+  this.isAttacking = true;
 
 };
 
@@ -29,7 +29,6 @@ Alien.prototype.update = function (du) {
   spatialManager.unregister(this);
 
   if (this._isDeadNow) return entityManager.KILL_ME_NOW;
-
 
   this.animationTimer += du;
 
@@ -46,7 +45,6 @@ Alien.prototype.update = function (du) {
 
   if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
     entityManager.changeAliensDirection();
-    return;
   }
   
   this.cx = nextX;

@@ -2,8 +2,7 @@
 
 entityManager.js
 
-A module which handles arbitrary entity-management for "Asteroids"
-
+A module which handles arbitrary entity-management
 
 We create this module as a single global object, and initialise it
 with suitable 'data' and 'methods'.
@@ -21,8 +20,6 @@ with suitable 'data' and 'methods'.
 // (plusplus).
 //
 /*jslint nomen: true, white: true, plusplus: true*/
-
-// Here, the fist row has 3 live
 
 const LEFT = -1;
 const RIGHT = 1;
@@ -91,15 +88,6 @@ _findNearestShip : function(posX, posY) {
         theShip : closestShip,
         theIndex: closestIndex
     };
-},
-
-_findAlienGridEdges: function() {
-    let leftMost = g_canvas.width;
-    let rightMost = 0;
-
-    for (let i = 0; i < this._aliens.length; i++) {
-
-    }
 },
 
 _forEachOf: function(aCategory, fn) {
@@ -175,34 +163,17 @@ generateShip : function(descr) {
     this._ships.push(new Ship(descr));
 },
 
-/*
-generateAliens: function(descr) {
-    this._aliens = new Aliens(descr)
-    console.log(this._aliens)
-},
-*/
-
-killNearestShip : function(xPos, yPos) {
-    var theShip = this._findNearestShip(xPos, yPos).theShip;
-    if (theShip) {
-        theShip.kill();
-    }
-},
-
-yoinkNearestShip : function(xPos, yPos) {
-    var theShip = this._findNearestShip(xPos, yPos).theShip;
-    if (theShip) {
-        theShip.setPos(xPos, yPos);
-    }
-},
-
-resetShips: function() {
+resetShip: function() {
     this._forEachOf(this._ships, Ship.prototype.reset);
 },
 
-haltShips: function() {
-    this._forEachOf(this._ships, Ship.prototype.halt);
-},	
+resetAliens: function() {
+    
+    for (let i = 0; i < this._aliens.length; i++) {
+        this._aliens[i]._isDeadNow = false;
+    }
+
+},
 
 update: function(du) {
 
@@ -225,15 +196,10 @@ update: function(du) {
             }
         }
     }
-    
-    //this._aliens.update(du);
-    //if (this._rocks.length === 0) this._generateRocks();
 
 },
 
 render: function(ctx) {
-
-    var debugX = 10, debugY = 100;
 
     for (var c = 0; c < this._categories.length; ++c) {
 
@@ -242,12 +208,9 @@ render: function(ctx) {
         for (var i = 0; i < aCategory.length; ++i) {
 
             aCategory[i].render(ctx);
-            //debug.text(".", debugX + i * 10, debugY);
 
         }
-        debugY += 10;
     }
-    //this._aliens.render(ctx)
 }
 
 }

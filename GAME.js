@@ -2,9 +2,6 @@
 
 /* jshint browser: true, devel: true, globalstrict: true */
 
-var g_canvas = document.getElementById("myCanvas");
-var g_ctx = g_canvas.getContext("2d");
-
 var g_sceneManager = new SceneManager();
 
 /*
@@ -71,16 +68,13 @@ function updateSimulation(du) {
 var g_renderSpatialDebug = false;
 
 var KEY_SPATIAL = keyCode('X');
-var KEY_HALT = keyCode('H');
 var KEY_RESET = keyCode('R');
 
 function processDiagnostics() {
 
     if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
 
-    if (eatKey(KEY_HALT)) entityManager.haltShips();
-
-    if (eatKey(KEY_RESET)) entityManager.resetShips();
+    if (eatKey(KEY_RESET)) entityManager.resetShip();
 
 }
 

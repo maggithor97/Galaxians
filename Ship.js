@@ -82,8 +82,7 @@ Ship.prototype.update = function (du) {
                g_sceneManager.restart();
                this.extraLives = 0;
            }
-           this.sprite.setAnimation("default");
-           this.isExploding = false;
+
            this.reset();
         }
         return;
@@ -150,7 +149,8 @@ Ship.prototype.takeBulletHit = function (bullet) {
 Ship.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.rotation = this.reset_rotation;
-    
+    this.sprite.setAnimation("default");
+    this.isExploding = false;
     // unsure why this is called. I removed it because then the reset function can be used to respawn the player after death.
     //this.halt();
 };

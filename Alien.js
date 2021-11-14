@@ -14,7 +14,7 @@ function Alien(descr) {
 
   this.cx = gapLeftWall + descr.x * (gapBetween + this.width);
   this.cy = gapTopWall + descr.y * (gapBetween + this.height);
-  this.velX = 3;
+  this.velX = 0.5;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
@@ -39,13 +39,17 @@ Alien.prototype.update = function (du) {
     }
     return;
   }
-  //if (this.cy < 0 || this.cy > g_canvas.height) return entityManager.KILL_ME_NOW;
 
-  /*
-  let nextX = this.velX * du;
-  if (nextX < 0 || nextX > g_canvas.width) this.velX *= -1;
-  this.cx += nextX;
-  */
+  let direction = entityManager.getAliensDirection();
+  let nextX = this.cx + (this.velX * direction * du);
+  let halfWidth = this.sprite.width / 2;
+
+  if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
+    entityManager.changeAliensDirection();
+    return;
+  }
+  
+  this.cx = nextX;
 
   if (this.isAttacking) {
     this.maybeFireBullet();

@@ -24,11 +24,14 @@ with suitable 'data' and 'methods'.
 
 // Here, the fist row has 3 live
 
+const LEFT = -1;
+const RIGHT = 1;
 
 var entityManager = {
 
 // "PRIVATE" DATA
 _aliens   : [],
+_aliens_x_direction : LEFT,
 _enemy_bullets : [],
 _ships   : [],
 _player_bullet : [],
@@ -90,6 +93,15 @@ _findNearestShip : function(posX, posY) {
     };
 },
 
+_findAlienGridEdges: function() {
+    let leftMost = g_canvas.width;
+    let rightMost = 0;
+
+    for (let i = 0; i < this._aliens.length; i++) {
+
+    }
+},
+
 _forEachOf: function(aCategory, fn) {
     for (var i = 0; i < aCategory.length; ++i) {
         fn.call(aCategory[i]);
@@ -138,6 +150,14 @@ spawnPlayerBullet: function(cx, cy) {
 
 firePlayerBullet: function() {
     this._player_bullet[0].velY = -5;
+},
+
+getAliensDirection : function() {
+    return this._aliens_x_direction;
+},
+
+changeAliensDirection : function() {
+    this._aliens_x_direction = (this._aliens_x_direction === LEFT) ? RIGHT : LEFT;
 },
 
 getShipCoords : function() {

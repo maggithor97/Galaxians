@@ -181,14 +181,14 @@ function loadSprites() {
         }}
     );
 
-    g_sprites.playerBullet = new Sprite(g_images.sheet, g_scale, {
+    g_sprites.playerBullet = new Sprite(g_images.sheet, g_scale * 1.5, {
         default: {
             size: { w: 1, h: 3 },
             frames: [[66, 196]]
         }
     });
 
-    g_sprites.enemyBullet = new Sprite(g_images.sheet, g_scale, {
+    g_sprites.enemyBullet = new Sprite(g_images.sheet, g_scale * 1.5, {
         default: {
             size: { w: 1, h: 3 },
             frames: [[139, 196]]

@@ -12,14 +12,15 @@ function Alien(descr) {
   let gapTopWall = this.height * 1.5;
   let gapBetween = this.width / 10;
 
-  this.cx = gapLeftWall + descr.x * (gapBetween + this.width),
-    this.cy = gapTopWall + descr.y * (gapBetween + this.height),
-
-    this.velX = 5;
+  this.cx = gapLeftWall + descr.x * (gapBetween + this.width);
+  this.cy = gapTopWall + descr.y * (gapBetween + this.height);
+  this.velX = 3;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
   this.isExploding = false;
+  this.isAttacking = false;
+
 };
 
 Alien.prototype = new Entity();
@@ -46,7 +47,9 @@ Alien.prototype.update = function (du) {
   this.cx += nextX;
   */
 
-  this.maybeFireBullet();
+  if (this.isAttacking) {
+    this.maybeFireBullet();
+  }
 
   spatialManager.register(this);
 };
@@ -79,8 +82,8 @@ Alien.prototype.takeBulletHit = function (bullet) {
 
 
 Alien.prototype.maybeFireBullet = function () {
-  var x = parseInt(Math.random() * 5000);
-  if (x < 2) {
-    entityManager.fireEnemyBullet(this.cx, this.cy + 18, 2)
+  let probability = util.randRange(0, 5000);
+  if (probability < 2) {
+    entityManager.fireEnemyBullet(this.cx, this.cy + this.sprite.height / 2, 2)
   }
 };

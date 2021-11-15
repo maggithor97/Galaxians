@@ -19,7 +19,7 @@ function Alien(descr) {
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
   this.isExploding = false;
-  this.isAttacking = true;
+  this.isAttacking = false;
 
 };
 
@@ -33,9 +33,15 @@ Alien.prototype.update = function (du) {
   this.animationTimer += du;
 
   if (this.isExploding) {
-    if (this.sprite.frame === this.sprite.numFrames-1) {
+    if (this.sprite.frame === this.sprite.numFrames - 1) {
       return entityManager.KILL_ME_NOW;
     }
+    return;
+  }
+
+  if (this.isAttacking) {
+    this.updateAttackingAlien(du);
+    spatialManager.register(this);
     return;
   }
 
@@ -46,11 +52,11 @@ Alien.prototype.update = function (du) {
   if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
     entityManager.changeAliensDirection();
   }
-  
+
   this.cx = nextX;
 
-  if (this.isAttacking) {
-    this.maybeFireBullet();
+  if (Math.random() * 15000 < 2) {
+    this.makeAlienAttack()
   }
 
   spatialManager.register(this);
@@ -83,9 +89,36 @@ Alien.prototype.takeBulletHit = function (bullet) {
 };
 
 
-Alien.prototype.maybeFireBullet = function () {
-  let probability = util.randRange(0, 5000);
-  if (probability < 2) {
+Alien.prototype.updateAttackingAlien = function (du) {
+  var wavespeed = 0.01;
+  this.t = (this.t + wavespeed) % (Math.PI * 2);
+  var a = Math.sin(this.t) * 1;
+  //this.cx = this.attackStartX + Math.sin(this.angleRadians) * a;
+  //this.cy += 0.7;
+  var c = (Math.cos(this.angleRadians));
+  var s = (Math.sin(this.angleRadians));
+
+  var wobble = a * Math.cos(1.5 * this.t) * 1;
+  var velX = c * 1.5 - s * wobble;
+  var velY = s * 1.5 + c * wobble;
+  this.cx += velX
+  this.cy += velY
+
+  if(this.cy < 300 && this.cy > 295) {
     entityManager.fireEnemyBullet(this.cx, this.cy + this.sprite.height / 2, 2)
   }
+  if(this.cy > g_canvas.height) {
+    this.isAttacking=false
+  }
+};
+
+Alien.prototype.makeAlienAttack = function () {
+  this.isAttacking = true;
+  this.sprite.setAnimation("attacking");
+  var shipY = entityManager._ships[0].cy;
+  var shipX = entityManager._ships[0].cx;
+  this.angleRadians = Math.atan2(shipY - this.cy, shipX - this.cx);
+  this.attackStartX = this.cx;
+  this.attackStartY = this.cy;
+  this.t = 0.1;
 };

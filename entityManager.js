@@ -230,7 +230,7 @@ render: function(ctx) {
     //this._aliens.render(ctx)
 
     //uncomment this to test the score advance table menu
-    RenderScoreAT(g_ctx);
+    g_scoreTableScene.render(ctx);
 }
 
 }

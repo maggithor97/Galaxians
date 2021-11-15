@@ -6,12 +6,12 @@ arcadeFont.load().then(function(font){
 });*/
 
 
-g_menuScene = {};
+g_scoreTableScene = {};
 
 
 
 //score advance table
-g_menuScene.render = function(ctx){
+g_scoreTableScene.render = function(ctx){
     let titleText = "-  SCORE  ADVANCE  TABLE  -";
 
     var alienStartYpos = 290;   //change this to move the entire alien column along y-axis
@@ -32,7 +32,6 @@ g_menuScene.render = function(ctx){
     ctx.font = "25px Berlin Sans FB";
     ctx.fillStyle = "white";
     ctx.fillText(titleText, g_canvas.width/2 - ctx.measureText(titleText).width/2, g_canvas.height/2);
-
 
 
 }

@@ -6,15 +6,20 @@ arcadeFont.load().then(function(font){
 });*/
 
 
+g_menuScene = {};
+
+
+
 //score advance table
-function RenderScoreAT(ctx){
+g_menuScene.render = function(ctx){
     let titleText = "-  SCORE  ADVANCE  TABLE  -";
 
-    var alienStartYpos = 290;
+    var alienStartYpos = 290;   //change this to move the entire alien column along y-axis
     var spriteLinespacing = 25;
     var alienYPos = alienStartYpos + spriteLinespacing;
     var alienXPos = 100;
-    
+  
+    //draws the aliens for the score table in correct order
     var alienIcon = new Sprite(g_images.sheet, 2, g_sprites.aliens[3]);
     alienIcon.drawCentredAt(ctx, alienXPos, alienStartYpos, 0);
 
@@ -24,8 +29,8 @@ function RenderScoreAT(ctx){
         alienYPos += spriteLinespacing;
     }
 
-    ctx.font = "30px Berlin Sans FB";
-    ctx.fillstyle = "white";
+    ctx.font = "25px Berlin Sans FB";
+    ctx.fillStyle = "white";
     ctx.fillText(titleText, g_canvas.width/2 - ctx.measureText(titleText).width/2, g_canvas.height/2);
 
 

@@ -102,5 +102,4 @@ fillBox: function (ctx, x, y, w, h, style) {
     ctx.fillRect(x, y, w, h);
     ctx.fillStyle = oldStyle;
 }
-
 };

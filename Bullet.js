@@ -88,7 +88,6 @@ Bullet.prototype.update = function (du) {
        
     }
 
-    // TODO: YOUR STUFF HERE! --- (Re-)Register
     spatialManager.register(this);
 
 };

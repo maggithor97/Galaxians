@@ -22,5 +22,6 @@ SceneManager.prototype.loadScene = function (id, argsForInit = false) {
 }
 
 SceneManager.prototype.restart = function () {
-  this.activeScene = "menu";
+  //this.activeScene = "menu";
+  this.loadScene("menu");
 }

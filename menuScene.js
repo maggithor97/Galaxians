@@ -2,6 +2,10 @@ var KEY_SPACE = keyCode(' ');
 
 g_menuScene = {};
 
+g_menuScene.init = function() {
+
+};
+
 g_menuScene.updateSimulation = function (du) {
   if (eatKey(KEY_SPACE)) {
     g_sceneManager.loadScene("game");

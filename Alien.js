@@ -14,8 +14,13 @@ function Alien(descr) {
 
   //this.cx = gapLeftWall + descr.x * (gapBetween + this.width); // This is now moved to update function of entityManager
   this.x = descr.x; // its index in the _aliens_x_position grid in entityManager
-  this.cy = gapTopWall + descr.y * (gapBetween + this.height);
-  this.velX = 0.5;
+  this.originalY = gapTopWall + descr.y * (gapBetween + this.height);
+  if(descr.isRespawning == false)
+    this.cy = originalY;
+  else 
+    this.cy = 10;
+
+  this.velY = 0.5;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
@@ -49,8 +54,14 @@ Alien.prototype.update = function (du) {
     entityManager.changeAliensDirection();
   }
   this.cx = nextX;
-  */  
+  */
+  // Updating x position  
   this.cx = entityManager.getAlienPosition(this.x);
+  // Updating y position
+
+  if(this.cy < this.originalY){
+    this.cy += this.velY * du;
+  }
 
   if (this.isAttacking) {
     this.maybeFireBullet();

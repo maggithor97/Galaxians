@@ -155,6 +155,7 @@ firePlayerBullet: function() {
     this._player_bullet[0].velY = -5;
 },
 
+// Return the position of the alien at column number [index].
 getAlienPosition : function(index) {
     return this._aliens_x_position[index];
 },

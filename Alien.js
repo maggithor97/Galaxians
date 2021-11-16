@@ -12,7 +12,6 @@ function Alien(descr) {
   let gapTopWall = this.height * 1.5;
   let gapBetween = this.width / 10;
 
-  //this.cx = gapLeftWall + descr.x * (gapBetween + this.width); // This is now moved to update function of entityManager
   this.x = descr.x; // its index in the _aliens_x_position grid in entityManager
   this.originalY = gapTopWall + descr.y * (gapBetween + this.height);
   if(descr.isRespawning == false)
@@ -45,20 +44,9 @@ Alien.prototype.update = function (du) {
     return;
   }
 
-  /* Old code for updating alien position, this is now moved to entityManager.
-  let direction = entityManager.getAliensDirection();
-  let nextX = this.cx + (this.velX * direction * du);
-  let nextX = entityManager.getAlienPosition(this.x);
-  let halfWidth = this.sprite.width / 2;
-  if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
-    entityManager.changeAliensDirection();
-  }
-  this.cx = nextX;
-  */
   // Updating x position  
   this.cx = entityManager.getAlienPosition(this.x);
   // Updating y position
-
   if(this.cy < this.originalY){
     this.cy += this.velY * du;
   }

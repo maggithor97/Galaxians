@@ -19,7 +19,7 @@ function Alien(descr) {
   this.originalY = gapTopWall + descr.y * (gapBetween + this.height);
 
   if(descr.isRespawning == false)
-    this.cy = originalY;
+    this.cy = this.originalY;
   else 
     this.cy = 10;
 
@@ -28,7 +28,7 @@ function Alien(descr) {
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
   this.isExploding = false;
-  this.isAttacking = true;
+  this.isAttacking = false;
 
 };
 
@@ -48,11 +48,13 @@ Alien.prototype.update = function (du) {
     return;
   }
 
+  let nextY = this.cy;
   // Updating x position  
   this.cx = entityManager.getAlienPosition(this.column);
   // Updating y position
   if(this.cy < this.originalY){
-    this.cy += this.velY * du;
+    //this.cy += this.velY * du;
+    nextY = this.cy + this.velY * du;
   }
 
   // Check if this enemy should start attack round
@@ -60,7 +62,11 @@ Alien.prototype.update = function (du) {
 
   if (this.isAttacking) {
     this.maybeFireBullet();
+    nextY = this.cy + this.velY * du;
   }
+
+  this.cy = nextY;
+
 
   spatialManager.register(this);
 };
@@ -99,9 +105,28 @@ Alien.prototype.maybeFireBullet = function () {
   }
 };
 
+// Checks the condition for initiatng an attack
+// The conditions are: The alien should not have any neighbours in one direction
 Alien.prototype.maybeAttack = function() {
   let alienGrid = entityManager.getAlienGrid();
-  if(this.column == 0 ||  this.column == alienGrid[0].length -1){
+  let leftNeighboursDead = true;
+  let rightNeighboursDead = true;
+  // Check that all enemies to the left is dead
+  for(let i = 0; i < this.column; i++){
+    if(alienGrid[this.row][i] != 0){
+      leftNeighboursDead = false
+      break;
+    }
+  }
+  // Check that all enemies to the right is dead
+  for(let i = alienGrid[this.row].length - 1; i > this.column; i--){
+    if(alienGrid[this.row][i] != 0){
+      rightNeighboursDead = false
+      break;
+    }
+  }
+
+  if(this.column == 0 ||  this.column == alienGrid[0].length -1 || leftNeighboursDead || rightNeighboursDead){
     let probability = util.randRange(0, 5000);
     if (probability < 2) {
       this.isAttacking = true;

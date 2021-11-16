@@ -75,7 +75,7 @@ _generateAliens : function() {
                 y : i,
                 type : type - 1,
                 scale : g_scale,
-                isRespawning : true,
+                isRespawning : false,
                 sprite : new Sprite(g_images.sheet, g_scale, g_sprites.aliens[type - 1])
             });
         }

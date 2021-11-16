@@ -22,6 +22,8 @@ function initialize() {
     background.init();
 
     entityManager.init();
+
+    hud.init();
 }
 
 // =============
@@ -62,8 +64,11 @@ var g_renderSpatialDebug = false;
 
 var KEY_SPATIAL = keyCode('X');
 var KEY_RESET = keyCode('R');
+var CHEAT_KILL_ALIEN = keyCode('K');
 
 function processDiagnostics() {
+
+    if (eatKey(CHEAT_KILL_ALIEN)) entityManager.CHEAT_killAlien();
 
     if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
 
@@ -115,7 +120,7 @@ function loadSprites() {
     g_sprites.ship = new Sprite(g_images.sheet, g_scale, {
         default: {
             size: { w: 14, h: 14 },
-            frames: [[2, 71]]
+            frames: [[2, 70]]
         },
         explosion: {
             size: { w: 30, h: 30 },
@@ -123,6 +128,19 @@ function loadSprites() {
         }
     });
 
+    g_sprites.lives = new Sprite(g_images.sheet, g_scale * 0.75, {
+        default: {
+            size: { w: 14, h: 14 },
+            frames: [[19, 70]]
+        }
+    });
+
+    g_sprites.flag = new Sprite(g_images.sheet, g_scale, {
+        default: {
+            size: { w: 8, h: 14 },
+            frames: [[35, 70]]
+        }
+    });
     // We don't instantiate a Sprite for the aliens here, only populate
     // an array with the sprite data. Instantiation is done in entityManager
     // via the _generateAliens method.

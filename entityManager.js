@@ -30,6 +30,7 @@ var entityManager = {
 _aliens   : [],
 _aliens_x_position : [],
 _aliens_x_direction : LEFT,
+_flags : 1,
 _enemy_bullets : [],
 _ships   : [],
 _player_bullet : [],
@@ -131,6 +132,7 @@ init: function() {
 },
 
 reset: function() {
+    this._flags = 1;
     this.resetShip();
     this.resetAliens();
     this.resetBullets();
@@ -193,8 +195,20 @@ changeAliensDirection : function() {
     this._aliens_x_direction = (this._aliens_x_direction === LEFT) ? RIGHT : LEFT;
 },
 
+CHEAT_killAlien: function() {
+    this._aliens[0].kill();
+},
+
+getFlags : function() {
+    return this._flags;
+},
+
 getShipCoords : function() {
     return { x: this._ships[0].cx, y: this._ships[0].cy };
+},
+
+getShipLives : function() {
+    return this._ships[0].extraLives;
 },
 
 generateAlien : function(descr) {
@@ -257,8 +271,10 @@ update: function(du) {
         }
     }
 
-    if(this._aliens.length === 0) {
-        this.reset();
+    if (this._aliens.length === 0) {
+        this.resetAliens();
+        this._flags += 1;
+        this.deferredSetup();
         // Go to next level
     }
 },

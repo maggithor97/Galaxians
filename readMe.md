@@ -2,7 +2,7 @@
 
 **Group B2**
 
-**Team members:** [Niklas Wessman](https://github.com/nwessman), [Magnús Þór](https://github.com/maggithor97), Ívar Árnason, Sturla Páll Gunnarsson
+**Team members:** [Niklas Wessman](https://github.com/nwessman), [Magnús Þór](https://github.com/maggithor97), [Ívar Árnason](https://github.com/ivar1309), [Sturla Páll Gunnarsson](https://github.com/spg6-hi)
 
 **Demo: Galaxian** 1979 Namco Mame Retro Arcade Games
 
@@ -25,7 +25,7 @@
 #### Week 3
 - [ ] Player collision with enemy bullets
 - [ ] Individual enemies attacking
-- [ ] respawning enemies
+- [x] respawning enemies
 - [ ] Menues
 - [ ] Highscore
 - [ ] Sound effects

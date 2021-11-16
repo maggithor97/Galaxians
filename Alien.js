@@ -12,7 +12,8 @@ function Alien(descr) {
   let gapTopWall = this.height * 1.5;
   let gapBetween = this.width / 10;
 
-  this.cx = gapLeftWall + descr.x * (gapBetween + this.width);
+  //this.cx = gapLeftWall + descr.x * (gapBetween + this.width); // This is now moved to update function of entityManager
+  this.x = descr.x; // its index in the _aliens_x_position grid in entityManager
   this.cy = gapTopWall + descr.y * (gapBetween + this.height);
   this.velX = 0.5;
 
@@ -39,15 +40,17 @@ Alien.prototype.update = function (du) {
     return;
   }
 
+  /* Old code for updating alien position, this is now moved to entityManager.
   let direction = entityManager.getAliensDirection();
   let nextX = this.cx + (this.velX * direction * du);
+  let nextX = entityManager.getAlienPosition(this.x);
   let halfWidth = this.sprite.width / 2;
-
   if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
     entityManager.changeAliensDirection();
   }
-  
   this.cx = nextX;
+  */  
+  this.cx = entityManager.getAlienPosition(this.x);
 
   if (this.isAttacking) {
     this.maybeFireBullet();

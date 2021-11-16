@@ -28,6 +28,7 @@ var entityManager = {
 
 // "PRIVATE" DATA
 _aliens   : [],
+_aliens_x_position : [],
 _aliens_x_direction : LEFT,
 _enemy_bullets : [],
 _ships   : [],
@@ -45,6 +46,19 @@ _generateAliens : function() {
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
     ];
+
+    // Fill the _aliens_x_position array with their position
+    // This array will then be updated with its x position
+    // and then the alien can receive their position from here
+    // This saves some computations, but most importantly it 
+    // allows for respawning enemies to find their position 
+    // even though it is constantly moving
+    let alienWidth = 28; // This values are extracted from Alien
+    let gapLeftWall = 58;
+    let gapBetween = 2.8; 
+    for(let j = 0; j  < 10; j++){
+        this._aliens_x_position[j] = gapLeftWall + j * (gapBetween + alienWidth); // This formula is taken from the former init in Alien
+    }    
 
     for (let i = 0; i < alienGridTypes.length; i++) {
         let row = alienGridTypes[i];
@@ -140,6 +154,24 @@ firePlayerBullet: function() {
     this._player_bullet[0].velY = -5;
 },
 
+getAlienPosition : function(index) {
+    return this._aliens_x_position[index];
+},
+
+// Update all aliens positions
+updateAlienPosition : function(du) {
+    let velX = 0.5;
+    let halfWidth = 14;
+    for(let i = 0; i < this._aliens_x_position.length; i++){
+        let direction = this.getAliensDirection();
+        let nextX = this._aliens_x_position[i] + (velX * direction * du);
+        if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
+            this.changeAliensDirection();
+        }
+        this._aliens_x_position[i] = nextX;
+    }
+},
+
 getAliensDirection : function() {
     return this._aliens_x_direction;
 },
@@ -176,6 +208,8 @@ resetAliens: function() {
 },
 
 update: function(du) {
+    //Update enemy position
+    this.updateAlienPosition(du);
 
     for (var c = 0; c < this._categories.length; ++c) {
 

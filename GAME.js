@@ -18,6 +18,7 @@ var g_sceneManager = new SceneManager();
 // ====================
 
 function initialize() {
+    g_sceneManager.addScene("gamOver", g_gameOverScene);
     g_sceneManager.addScene("scoreTable", g_scoreTableScene);
     g_sceneManager.addScene("menu", g_menuScene);
     g_sceneManager.addScene("game", g_gameScene);

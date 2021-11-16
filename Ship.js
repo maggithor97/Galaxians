@@ -31,6 +31,11 @@ function Ship(descr) {
     //this._isWarping = false;
 
     this.isExploding = false;
+    this.isRespawning = false;
+    
+    this.respawnInterval = 1 * SECS_TO_NOMINALS;
+    this.respawnTimer = 0;
+
     this.animationInterval = 0.25 * SECS_TO_NOMINALS;
     this.animationTimer = 0;
     this.extraLives = 3;
@@ -73,17 +78,30 @@ Ship.prototype.update = function (du) {
     if (this._isDeadNow) return entityManager.KILL_ME_NOW;
 
     this.animationTimer += du;
+
+    if (this.isRespawning) {
+        this.respawnTimer += du;
+
+        if (this.respawnTimer > this.respawnInterval) {
+            this.reset();
+        }
+
+        return;
+    }
+
     if (this.isExploding) {
         if (this.sprite.frame === this.sprite.numFrames-1) {
             //return entityManager.KILL_ME_NOW;
-           this.extraLives -= 1;
-           if(this.extraLives <= 0){
-               // Back to menu.
-               g_sceneManager.restart();
-               this.extraLives = 0;
-           }
+            this.extraLives -= 1;
+            if (this.extraLives <= 0) {
+                // Back to menu.
+                this.extraLives = 0;
+                this.reset();
+                g_sceneManager.restart();
+            }
 
-           this.reset();
+            this.isRespawning = true;
+            //this.reset();
         }
         return;
       }
@@ -140,6 +158,8 @@ Ship.prototype.takeBulletHit = function (bullet) {
         return;
     }
 
+    entityManager.despawnPlayerBullet();
+
     this.sprite.setAnimation("explosion");
     this.isExploding = true;
     this.animationInterval = 0.10 * SECS_TO_NOMINALS
@@ -151,6 +171,8 @@ Ship.prototype.reset = function () {
     this.rotation = this.reset_rotation;
     this.sprite.setAnimation("default");
     this.isExploding = false;
+    this.isRespawning = false;
+    this.respawnTimer = 0;
     // unsure why this is called. I removed it because then the reset function can be used to respawn the player after death.
     //this.halt();
 };
@@ -161,6 +183,8 @@ Ship.prototype.halt = function () {
 };
 
 Ship.prototype.render = function (ctx) {
+    if (this.isRespawning) return;
+
     this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 
     if (this.animationTimer > this.animationInterval) {

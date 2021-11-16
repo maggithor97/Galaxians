@@ -158,6 +158,10 @@ spawnPlayerBullet: function(cx, cy) {
     }));
 },
 
+despawnPlayerBullet: function() {
+    this._player_bullet.pop();
+},
+
 firePlayerBullet: function() {
     this._player_bullet[0].velY = -5;
 },

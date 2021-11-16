@@ -24,6 +24,8 @@ function Hud(descr) {
 
   this.lives = 0;
   this.flags = 1;
+  this.score = "00";
+  this.highscore = "00";
   
 };
 
@@ -39,7 +41,12 @@ Hud.prototype.update = function (du) {
   console.log(this.flags);
 };
 
-Hud.prototype.render = function (ctx) {
+Hud.prototype.renderScore = function (ctx) {
+  Text(ctx, "1UP   HIGH SCORE", 25, 5, g_fonts.white);
+  Text(ctx, `  ${this.score}        ${this.highscore}`, 25, 21, g_fonts.red);
+};
+
+Hud.prototype.renderLives = function (ctx) {
   let livesOffsetX = 10;
   let livesOffsetY = 2;
   let lx = this.livesSprite.width / 2 + livesOffsetX;
@@ -48,7 +55,9 @@ Hud.prototype.render = function (ctx) {
   for (let i = 1; i < this.lives; i++) {
     this.livesSprite.drawCentredAt(ctx, lx * i, ly, 0);
   }
+};
 
+Hud.prototype.renderFlags = function (ctx) {
   let flagOffsetX = 10;
   let flagOffsetY = 2;
   
@@ -57,6 +66,14 @@ Hud.prototype.render = function (ctx) {
     let fy = g_canvas.height - this.flagSprite.height / 2 - flagOffsetY;
     this.flagSprite.drawCentredAt(ctx, fx, fy, 0);
   }
+};
+
+Hud.prototype.render = function (ctx) {
+
+  this.renderScore(ctx);
+  this.renderLives(ctx);
+  this.renderFlags(ctx);
+
 };
 
 let hud = new Hud({

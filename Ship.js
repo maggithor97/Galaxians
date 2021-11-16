@@ -161,7 +161,7 @@ Ship.prototype.halt = function () {
 };
 
 Ship.prototype.render = function (ctx) {
-    this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, this.rotation);
+    this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 
     if (this.animationTimer > this.animationInterval) {
         this.sprite.nextFrame();

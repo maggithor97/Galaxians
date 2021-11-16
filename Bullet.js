@@ -72,20 +72,22 @@ Bullet.prototype.update = function (du) {
     var hitEntity = this.findHitEntity();
     if (hitEntity) {
         var canTakeHit = hitEntity.takeBulletHit;
+
         if (canTakeHit && 
-            hitEntity.type !== "playerBullet" &&
-            hitEntity.type !== "enemyBullet") {
+            this.type === "enemyBullet" && 
+            hitEntity.type === "Ship") {
+
             hitEntity.takeBulletHit(this);
+            this.kill();
         }
-        if (this.type === "enemyBullet" &&
-            hitEntity.type === "ship") {
-            return entityManager.KILL_ME_NOW;
+
+        if (canTakeHit && 
+            this.type === "playerBullet" && 
+            hitEntity.type === "Alien") {
+                
+            hitEntity.takeBulletHit(this);
+            this.kill();
         }
-        if (this.type === "playerBullet" &&
-            hitEntity.type !== "enemyBullet") {
-                return entityManager.KILL_ME_NOW;
-            }
-       
     }
 
     spatialManager.register(this);

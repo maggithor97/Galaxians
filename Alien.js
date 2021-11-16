@@ -67,7 +67,7 @@ Alien.prototype.update = function (du) {
 
 Alien.prototype.render = function (ctx) {
 
-  this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy);
+  this.sprite.drawCentredAt(ctx, this.cx, this.cy);
 
   if (this.animationTimer > this.animationInterval) {
     this.sprite.nextFrame();

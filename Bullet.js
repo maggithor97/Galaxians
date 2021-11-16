@@ -62,9 +62,8 @@ Bullet.prototype.update = function (du) {
         this.cx = shipCoord.x;
         return;
     }
-
+    
     this.cy += this.velY * du;
-
 
     //
     // Handle collisions

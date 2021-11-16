@@ -25,7 +25,9 @@ function Alien(descr) {
 
   this.velYStandard = 0.5;
   this.velY = 0.5;
-  this.acceleration = 1;
+  this.acceleration = 0;
+  this.maxAcceleration = 3;
+  this.velX = 0.2;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
@@ -68,6 +70,20 @@ Alien.prototype.update = function (du) {
     this.maybeFireBullet();
     this.velY = 1.5;
     nextY = this.cy + (this.velY * du);
+
+    let dir = 1
+    if(this.cx > entityManager.getShipCoords().x)
+      dir = -1;
+
+    this.velX = 0.1;
+    this.acceleration += this.velX * dir;
+
+    if(this.acceleration > this.maxAcceleration)
+      this.acceleration = this.maxAcceleration;
+    if(this.acceleration < - this.maxAcceleration)
+      this.acceleration = - this.maxAcceleration;
+
+    this.cx += this.acceleration * du;
   }
 
   // If enemy is out of bounds reset it

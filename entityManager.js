@@ -194,8 +194,8 @@ getAlienGrid : function() {
 },
 
 // Set value of grid, is used generally to change values to 0 to indicate dead alien 
-setAlienGrid : function(x, y, value) {
-    this._alien_grid_types[x][y] = value;
+setAlienGrid : function(column, row, value) {
+    this._alien_grid_types[row][column] = value;
 },
 
 getAliensDirection : function() {

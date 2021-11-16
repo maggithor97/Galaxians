@@ -23,7 +23,7 @@ function Alien(descr) {
   else 
     this.cy = 10;
 
-  this.velY = 0.5;
+  this.velY = 1;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
@@ -43,6 +43,7 @@ Alien.prototype.update = function (du) {
 
   if (this.isExploding) {
     if (this.sprite.frame === this.sprite.numFrames-1) {
+      entityManager.setAlienGrid(this.column, this.row, 0); // remove enemy from grid
       return entityManager.KILL_ME_NOW;
     }
     return;
@@ -63,6 +64,12 @@ Alien.prototype.update = function (du) {
   if (this.isAttacking) {
     this.maybeFireBullet();
     nextY = this.cy + this.velY * du;
+  }
+
+  // If enemy is out of bounds reset it
+  if(this.cy > g_canvas.height + 100){
+    nextY = 0;
+    this.isAttacking = false;
   }
 
   this.cy = nextY;

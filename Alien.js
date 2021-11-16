@@ -169,7 +169,7 @@ Alien.prototype.takeBulletHit = function (bullet) {
 
 
 Alien.prototype.maybeFireBullet = function () {
-  let probability = util.randRange(0, 5000);
+  let probability = util.randRange(0, 200);
   if (probability < 2) {
     entityManager.fireEnemyBullet(this.cx, this.cy + this.sprite.height / 2, 2)
   }

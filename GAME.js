@@ -21,6 +21,8 @@ function initialize() {
 
     background.init();
 
+    entityManager.init();
+    /*
     let offset = (g_sprites.ship.scale * g_sprites.ship.sheetCoords.default.size.h) * 1.5;
     let margin = 4;
     entityManager.generateShip({
@@ -28,7 +30,7 @@ function initialize() {
         cy: g_canvas.height - offset - margin,
         scale: g_scale
     });
-
+    */
 }
 
 // =============
@@ -194,8 +196,6 @@ function loadSprites() {
 function preloadDone() {
 
     loadSprites();
-
-    entityManager.init();
 
     initialize();
 

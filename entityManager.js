@@ -111,8 +111,8 @@ deferredSetup : function () {
 },
 
 init: function() {
+    this.generateShip();
     this._generateAliens();
-    //this._generateShip();
 },
 
 fireEnemyBullet: function(cx, cy, velY) {
@@ -159,20 +159,28 @@ generateAlien : function(descr) {
     this._aliens.push(newAlien);
 },
 
-generateShip : function(descr) {
-    this._ships.push(new Ship(descr));
+generateShip : function() {
+    //this._ships.push(new Ship(descr));
+    let offset = (g_sprites.ship.scale * g_sprites.ship.sheetCoords.default.size.h) * 1.5;
+    let margin = 4;
+    
+    this._ships.push(new Ship({
+            cx: g_canvas.width / 2,
+            cy: g_canvas.height - offset - margin,
+            scale: g_scale
+        })
+    );
 },
 
 resetShip: function() {
-    this._forEachOf(this._ships, Ship.prototype.reset);
+    //this._forEachOf(this._ships, Ship.prototype.reset);
+    this._ships = [];
+    this.generateShip();
 },
 
 resetAliens: function() {
-    
-    for (let i = 0; i < this._aliens.length; i++) {
-        this._aliens[i]._isDeadNow = false;
-    }
-
+    this._aliens = [];
+    this._generateAliens();
 },
 
 update: function(du) {

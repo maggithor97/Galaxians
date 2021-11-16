@@ -59,6 +59,7 @@ Bullet.prototype.update = function (du) {
 
     if (this.velY === 0) {
         let shipCoord = entityManager.getShipCoords();
+        console.log(shipCoord);
         this.cx = shipCoord.x;
         return;
     }

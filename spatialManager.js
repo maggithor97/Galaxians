@@ -59,6 +59,10 @@ unregister: function(entity) {
     this._entities.delete(spatialID);
 },
 
+reset: function() {
+    this._entities = new Map();
+},
+
 findEntityInRange: function(posX, posY, radius) {
 
     // TODO: YOUR STUFF HERE!

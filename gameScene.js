@@ -11,8 +11,10 @@ var g_gameScene = {};
 // It then delegates the game-specific logic to `updateSimulation`
 
 g_gameScene.init = function (firstInit = false) {
+  spatialManager.reset();
   entityManager.resetShip();
   entityManager.resetAliens();
+  entityManager.deferredSetup();
 }
 
 // GAME-SPECIFIC UPDATE LOGIC

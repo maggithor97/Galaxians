@@ -119,6 +119,7 @@ reset: function() {
     this.resetShip();
     this.resetAliens();
     this.resetBullets();
+    this.deferredSetup();
 },
 
 fireEnemyBullet: function(cx, cy, velY) {

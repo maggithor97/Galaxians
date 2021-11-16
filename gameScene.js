@@ -12,9 +12,7 @@ var g_gameScene = {};
 
 g_gameScene.init = function (firstInit = false) {
   spatialManager.reset();
-  entityManager.resetShip();
-  entityManager.resetAliens();
-  entityManager.deferredSetup();
+  entityManager.reset();
 }
 
 // GAME-SPECIFIC UPDATE LOGIC

@@ -115,6 +115,12 @@ init: function() {
     this._generateAliens();
 },
 
+reset: function() {
+    this.resetShip();
+    this.resetAliens();
+    this.resetBullets();
+},
+
 fireEnemyBullet: function(cx, cy, velY) {
     this._enemy_bullets.push(new Bullet({
         cx   : cx,
@@ -163,7 +169,7 @@ generateShip : function() {
     //this._ships.push(new Ship(descr));
     let offset = (g_sprites.ship.scale * g_sprites.ship.sheetCoords.default.size.h) * 1.5;
     let margin = 4;
-    
+
     this._ships.push(new Ship({
             cx: g_canvas.width / 2,
             cy: g_canvas.height - offset - margin,
@@ -181,6 +187,11 @@ resetShip: function() {
 resetAliens: function() {
     this._aliens = [];
     this._generateAliens();
+},
+
+resetBullets: function() {
+    this._player_bullet = [];
+    this._enemy_bullets = [];
 },
 
 update: function(du) {

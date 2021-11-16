@@ -2,8 +2,10 @@ function Alien(descr) {
 
   this.setup(descr);
 
-  this.type = descr.type;
-  this.sprite = this.sprite || g_sprites.aliens[this.type];
+  this.type = "Alien";
+
+  this.spriteType = descr.type;
+  this.sprite = this.sprite || g_sprites.aliens[this.spriteType];
 
   this.width = this.sprite.width;
   this.height = this.sprite.height;

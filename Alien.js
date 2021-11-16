@@ -79,13 +79,13 @@ Alien.prototype.update = function (du) {
     nextY = this.cy + (this.accelerationY * du);
 
     // Move enemy to the side, with friction
+    // The alien is not allowed to change direction from the start when driving upwards
     if(this.accelerationY == 1.5){
       this.dir = 1
       if(this.cx > entityManager.getShipCoords().x)
         this.dir = -1;
     }
     
-
     this.acceleration += this.velX * this.dir;
 
     if(this.acceleration > this.maxAcceleration)

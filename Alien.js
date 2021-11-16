@@ -27,7 +27,9 @@ function Alien(descr) {
   this.velY = 0.5;
   this.acceleration = 0;
   this.maxAcceleration = 3;
-  this.velX = 0.2;
+  this.velX = 0.1;
+  this.accelerationY = 0;
+  this.dir = 1;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
@@ -69,14 +71,22 @@ Alien.prototype.update = function (du) {
   if (this.isAttacking) {
     this.maybeFireBullet();
     this.velY = 1.5;
-    nextY = this.cy + (this.velY * du);
+    //nextY = this.cy + (this.velY * du);
 
-    let dir = 1
-    if(this.cx > entityManager.getShipCoords().x)
-      dir = -1;
+    this.accelerationY += 0.1;
+    if(this.accelerationY > 1.5)
+      this.accelerationY = 1.5;
+    nextY = this.cy + (this.accelerationY * du);
 
-    this.velX = 0.1;
-    this.acceleration += this.velX * dir;
+    // Move enemy to the side, with friction
+    if(this.accelerationY == 1.5){
+      this.dir = 1
+      if(this.cx > entityManager.getShipCoords().x)
+        this.dir = -1;
+    }
+    
+
+    this.acceleration += this.velX * this.dir;
 
     if(this.acceleration > this.maxAcceleration)
       this.acceleration = this.maxAcceleration;
@@ -88,7 +98,7 @@ Alien.prototype.update = function (du) {
 
   // If enemy is out of bounds reset it
   if(this.cy > g_canvas.height + 100){
-    nextY = 0;
+    nextY = -20;
     this.isAttacking = false;
     this.velY = this.velYStandard;
   }
@@ -158,9 +168,12 @@ Alien.prototype.maybeAttack = function() {
     let probability = util.randRange(0, 5000);
     if (probability < 2) {
       this.isAttacking = true;
+      this.accelerationY = -2;
+      this.dir = 1;
       this.acceleration = this.maxAcceleration;
       if(leftNeighboursDead)
         this.acceleration = - this.maxAcceleration;
+        this.dir = -1;
     }
   }
 }

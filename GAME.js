@@ -21,14 +21,7 @@ function initialize() {
 
     background.init();
 
-    let offset = (g_sprites.ship.scale * g_sprites.ship.sheetCoords.default.size.h) * 1.5;
-    let margin = 4;
-    entityManager.generateShip({
-        cx: g_canvas.width / 2,
-        cy: g_canvas.height - offset - margin,
-        scale: g_scale
-    });
-
+    entityManager.init();
 }
 
 // =============
@@ -188,14 +181,11 @@ function loadSprites() {
             frames: [[139, 196]]
         }
     });
-    //g_sprites.bullet.scale = 0.25;
 }
 
 function preloadDone() {
 
     loadSprites();
-
-    entityManager.init();
 
     initialize();
 

@@ -23,7 +23,9 @@ function Alien(descr) {
   else 
     this.cy = 10;
 
-  this.velY = 1;
+  this.velYStandard = 0.5;
+  this.velY = 0.5;
+  this.acceleration = 1;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
@@ -50,12 +52,13 @@ Alien.prototype.update = function (du) {
   }
 
   let nextY = this.cy;
-  // Updating x position  
-  this.cx = entityManager.getAlienPosition(this.column);
+  // Updating x position 
+  if(this.isAttacking == false) 
+    this.cx = entityManager.getAlienPosition(this.column);
   // Updating y position
   if(this.cy < this.originalY){
     //this.cy += this.velY * du;
-    nextY = this.cy + this.velY * du;
+    nextY = this.cy + (this.velY * du);
   }
 
   // Check if this enemy should start attack round
@@ -63,13 +66,15 @@ Alien.prototype.update = function (du) {
 
   if (this.isAttacking) {
     this.maybeFireBullet();
-    nextY = this.cy + this.velY * du;
+    this.velY = 1.5;
+    nextY = this.cy + (this.velY * du);
   }
 
   // If enemy is out of bounds reset it
   if(this.cy > g_canvas.height + 100){
     nextY = 0;
     this.isAttacking = false;
+    this.velY = this.velYStandard;
   }
 
   this.cy = nextY;

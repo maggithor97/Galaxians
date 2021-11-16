@@ -14,8 +14,10 @@ function Alien(descr) {
   let gapTopWall = this.height * 1.5;
   let gapBetween = this.width / 10;
 
-  this.x = descr.x; // its index in the _aliens_x_position grid in entityManager
+  this.column = descr.x; // its index in the _aliens_x_position grid in entityManager
+  this.row    = descr.y;
   this.originalY = gapTopWall + descr.y * (gapBetween + this.height);
+
   if(descr.isRespawning == false)
     this.cy = originalY;
   else 
@@ -47,11 +49,14 @@ Alien.prototype.update = function (du) {
   }
 
   // Updating x position  
-  this.cx = entityManager.getAlienPosition(this.x);
+  this.cx = entityManager.getAlienPosition(this.column);
   // Updating y position
   if(this.cy < this.originalY){
     this.cy += this.velY * du;
   }
+
+  // Check if this enemy should start attack round
+  this.maybeAttack();
 
   if (this.isAttacking) {
     this.maybeFireBullet();
@@ -93,3 +98,13 @@ Alien.prototype.maybeFireBullet = function () {
     entityManager.fireEnemyBullet(this.cx, this.cy + this.sprite.height / 2, 2)
   }
 };
+
+Alien.prototype.maybeAttack = function() {
+  let alienGrid = entityManager.getAlienGrid();
+  if(this.column == 0 ||  this.column == alienGrid[0].length -1){
+    let probability = util.randRange(0, 5000);
+    if (probability < 2) {
+      this.isAttacking = true;
+    }
+  }
+}

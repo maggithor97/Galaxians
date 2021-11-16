@@ -158,6 +158,9 @@ Alien.prototype.maybeAttack = function() {
     let probability = util.randRange(0, 5000);
     if (probability < 2) {
       this.isAttacking = true;
+      this.acceleration = this.maxAcceleration;
+      if(leftNeighboursDead)
+        this.acceleration = - this.maxAcceleration;
     }
   }
 }

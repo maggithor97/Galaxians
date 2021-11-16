@@ -14,9 +14,14 @@ function Alien(descr) {
   let gapTopWall = this.height * 1.5;
   let gapBetween = this.width / 10;
 
-  this.cx = gapLeftWall + descr.x * (gapBetween + this.width);
-  this.cy = gapTopWall + descr.y * (gapBetween + this.height);
-  this.velX = 0.5;
+  this.x = descr.x; // its index in the _aliens_x_position grid in entityManager
+  this.originalY = gapTopWall + descr.y * (gapBetween + this.height);
+  if(descr.isRespawning == false)
+    this.cy = originalY;
+  else 
+    this.cy = 10;
+
+  this.velY = 0.5;
 
   this.animationInterval = 0.25 * SECS_TO_NOMINALS;
   this.animationTimer = 0;
@@ -41,15 +46,12 @@ Alien.prototype.update = function (du) {
     return;
   }
 
-  let direction = entityManager.getAliensDirection();
-  let nextX = this.cx + (this.velX * direction * du);
-  let halfWidth = this.sprite.width / 2;
-
-  if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
-    entityManager.changeAliensDirection();
+  // Updating x position  
+  this.cx = entityManager.getAlienPosition(this.x);
+  // Updating y position
+  if(this.cy < this.originalY){
+    this.cy += this.velY * du;
   }
-  
-  this.cx = nextX;
 
   if (this.isAttacking) {
     this.maybeFireBullet();

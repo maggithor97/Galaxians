@@ -35,6 +35,10 @@ function Alien(descr) {
   this.animationTimer = 0;
   this.isExploding = false;
   this.isAttacking = false;
+  this.isRotated = false;
+  this.animationFreeze = false;
+  this.rotation = 0;
+  this.loopCount = 0; 
 
 };
 
@@ -45,7 +49,8 @@ Alien.prototype.update = function (du) {
 
   if (this._isDeadNow) return entityManager.KILL_ME_NOW;
 
-  this.animationTimer += du;
+  if(this.animationFreeze == false)
+    this.animationTimer += du;
 
   if (this.isExploding) {
     if (this.sprite.frame === this.sprite.numFrames-1) {
@@ -66,9 +71,26 @@ Alien.prototype.update = function (du) {
   }
 
   // Check if this enemy should start attack round
-  this.maybeAttack();
+  if(this.isExploding == false)
+    this.maybeAttack();
 
   if (this.isAttacking) {
+    // Animation, if the attack animation has gone through all frames ONCE
+    // the sprite should be rotated by 90 degrees, and then played again ONCE
+    if (this.sprite.frame === 0 && this.loopCount == 1){
+      this.loopCount = 2;
+      this.rotation = 90 * Math.PI / 180;
+      this.isRotated = true;
+    }
+    if (this.sprite.frame === this.sprite.numFrames-1){
+      if(this.loopCount == 0)
+        this.loopCount = 1;
+      if(this.loopCount == 2){
+        this.animationFreeze = true;
+      }
+      // rotate by 90 degrees
+    }
+    
     this.maybeFireBullet();
     this.velY = 1.5;
     //nextY = this.cy + (this.velY * du);
@@ -101,17 +123,24 @@ Alien.prototype.update = function (du) {
     nextY = -20;
     this.isAttacking = false;
     this.velY = this.velYStandard;
+    this.sprite.setAnimation("default");
+    if(this.isRotated){
+      this.isRotated = false;
+      this.animationFreeze = false;
+      this.loopCount = 0;
+      this.rotation = 0;
+      // Rotate back by 90 degres counter clockwise!
+    }
   }
 
   this.cy = nextY;
-
 
   spatialManager.register(this);
 };
 
 Alien.prototype.render = function (ctx) {
 
-  this.sprite.drawCentredAt(ctx, this.cx, this.cy);
+  this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 
   if (this.animationTimer > this.animationInterval) {
     this.sprite.nextFrame();
@@ -132,6 +161,9 @@ Alien.prototype.takeBulletHit = function (bullet) {
 
   this.sprite.setAnimation("explosion");
   this.isExploding = true;
+  this.isAttacking = false;
+  this.animationFreeze = false;
+  this.rotation = 0;
   this.animationInterval = 0.10 * SECS_TO_NOMINALS
 };
 
@@ -167,6 +199,7 @@ Alien.prototype.maybeAttack = function() {
   if(this.column == 0 ||  this.column == alienGrid[0].length -1 || leftNeighboursDead || rightNeighboursDead){
     let probability = util.randRange(0, 5000);
     if (probability < 2) {
+      this.sprite.setAnimation("attacking");
       this.isAttacking = true;
       this.accelerationY = -2;
       this.dir = 1;

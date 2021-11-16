@@ -109,13 +109,13 @@ Bullet.prototype.takeBulletHit = function () {
 Bullet.prototype.render = function (ctx) {
 
     if (this.type === "playerBullet") {
-        g_sprites.playerBullet.drawWrappedCentredAt(
+        g_sprites.playerBullet.drawCentredAt(
             ctx, this.cx, this.cy, this.rotation
         );
     }
     
     if (this.type === "enemyBullet") {
-        g_sprites.enemyBullet.drawWrappedCentredAt(
+        g_sprites.enemyBullet.drawCentredAt(
             ctx, this.cx, this.cy, this.rotation
         );
     }

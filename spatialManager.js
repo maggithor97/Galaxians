@@ -68,18 +68,23 @@ findEntityInRange: function(posX, posY, radius) {
     // TODO: YOUR STUFF HERE!
     let iter = this._entities.entries();
     let entity = iter.next();
+    let hit = null;
 
     while (!entity.done) {
         let l = entity.value[1];
         let dSq = util.distSq(posX, posY, l.pos.posX, l.pos.posY);
         let rSq = util.square(radius + l.radius);
 
-        if (dSq < rSq) { return l.entity; }
+        if (l.entity.type == "Ship")
+            console.log(dSq, rSq);
+
+        //if (dSq < rSq) { return l.entity; }
+        if (dSq < rSq) { hit = l.entity; }
 
         entity = iter.next();
     }
 
-    return null;
+    return hit;
 },
 
 render: function(ctx) {

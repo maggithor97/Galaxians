@@ -257,6 +257,10 @@ update: function(du) {
         }
     }
 
+    if(this._aliens.length === 0) {
+        this.reset();
+        // Go to next level
+    }
 },
 
 render: function(ctx) {

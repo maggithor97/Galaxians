@@ -90,35 +90,35 @@ Alien.prototype.takeBulletHit = function (bullet) {
 
 
 Alien.prototype.updateAttackingAlien = function (du) {
-  var wavespeed = 0.01;
-  this.t = (this.t + wavespeed) % (Math.PI * 2);
-  var a = Math.sin(this.t) * 1;
-  //this.cx = this.attackStartX + Math.sin(this.angleRadians) * a;
-  //this.cy += 0.7;
-  var c = (Math.cos(this.angleRadians));
-  var s = (Math.sin(this.angleRadians));
+  
+  let nextX = this.cx + (this.attackVelX * this.attackDirection * du);
+  let halfWidth = this.sprite.width / 2;
 
-  var wobble = a * Math.cos(1.5 * this.t) * 1;
-  var velX = c * 1.5 - s * wobble;
-  var velY = s * 1.5 + c * wobble;
-  this.cx += velX
-  this.cy += velY
-
-  if(this.cy < 300 && this.cy > 295) {
-    entityManager.fireEnemyBullet(this.cx, this.cy + this.sprite.height / 2, 2)
+  if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
+    this.attackDirection = (this.attackDirection === LEFT) ? RIGHT : LEFT;
   }
+
+
+  this.cx = nextX;
+  this.cy += (this.attackVelY * du);
+
+  this.attackVelX += this.attackAccX;
+  this.attackVelY += this.attackAccY;
+
   if(this.cy > g_canvas.height) {
-    this.isAttacking=false
+    this.isAttacking=false;
+    
   }
 };
 
 Alien.prototype.makeAlienAttack = function () {
   this.isAttacking = true;
   this.sprite.setAnimation("attacking");
-  var shipY = entityManager._ships[0].cy;
-  var shipX = entityManager._ships[0].cx;
-  this.angleRadians = Math.atan2(shipY - this.cy, shipX - this.cx);
-  this.attackStartX = this.cx;
-  this.attackStartY = this.cy;
-  this.t = 0.1;
+
+  this.attackVelX = 0.5;
+  this.attackVelY = -1;
+  this.attackAccY = 0.02;
+  this.attackAccX = 0.01
+
+  this.attackDirection = entityManager.getAliensDirection();
 };

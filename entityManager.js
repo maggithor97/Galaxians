@@ -35,6 +35,8 @@ _alien_grid_types : [],
 _enemy_bullets : [],
 _ships   : [],
 _player_bullet : [],
+_phases : [6000, 4000, 2500, 1000, 500],
+_phase : 0,
 
 // "PRIVATE" METHODS
 
@@ -232,6 +234,27 @@ updateAlienPosition : function(du) {
 
 },
 
+// Get the probability of the phase currently in.
+getPhaseProbability : function () {
+    return this._phases[this._phase];
+},
+
+// Update game phase depending on amount of enemies on screen
+// 48 enemies in total, 5 phases in total : 0 indexed
+updatePhase : function () {
+    if(this._aliens.length > 40)
+        this._phase = 0;
+    else if(this._aliens.length > 30)
+        this._phase = 1;
+    else if(this._aliens.length > 20)
+        this._phase = 2;
+    else if(this._aliens.length > 10)
+        this._phase = 3;
+    else
+        this._phase = 4;
+    
+},
+
 // Get the grid that is used to check if neighbouring aliens is alive
 getAlienGrid : function() {
     return this._alien_grid_types;
@@ -327,8 +350,10 @@ resetBullets: function() {
 },
 
 update: function(du) {
-    //Update enemy position
+    // Update enemy position
     this.updateAlienPosition(du);
+    // Update phase
+    this.updatePhase();
 
     for (var c = 0; c < this._categories.length; ++c) {
 

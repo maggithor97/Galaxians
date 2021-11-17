@@ -202,7 +202,8 @@ Alien.prototype.maybeAttack = function() {
   }
 
   if(this.column == 0 ||  this.column == alienGrid[0].length -1 || leftNeighboursDead || rightNeighboursDead){
-    let probability = util.randRange(0, 5000);
+    let prob = entityManager.getPhaseProbability();
+    let probability = util.randRange(0, prob); //former 5000
     if (probability < 2) {
       this.sprite.setAnimation("attacking");
       this.isAttacking = true;

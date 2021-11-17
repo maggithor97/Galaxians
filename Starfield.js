@@ -57,7 +57,7 @@ Starfield.prototype.init = function (du) {
   // That is dark, faint or bright star.
   for (let i = 0; i < this.numStars; i++) {
     let rgb = this.getRGB();
-    console.log(rgb);
+
     let pixel = util.randRange(0, this.numPixels + 1);
     this.stars.push(pixel);
     

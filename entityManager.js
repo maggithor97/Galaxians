@@ -143,6 +143,7 @@ reset: function() {
 },
 
 fireEnemyBullet: function(cx, cy, velY) {
+    Bullet.prototype.laserAlien.play();
     this._enemy_bullets.push(new Bullet({
         cx   : cx,
         cy   : cy,
@@ -168,6 +169,7 @@ despawnPlayerBullet: function() {
 },
 
 firePlayerBullet: function() {
+    Bullet.prototype.laserPlayer.play();
     this._player_bullet[0].velY = -5;
 },
 

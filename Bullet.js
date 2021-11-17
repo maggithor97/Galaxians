@@ -33,11 +33,11 @@ function Bullet(descr) {
 Bullet.prototype = new Entity();
 
 // HACKED-IN AUDIO (no preloading)
-Bullet.prototype.fireSound = new Audio(
-    "sounds/bulletFire.ogg");
-Bullet.prototype.zappedSound = new Audio(
-    "sounds/bulletZapped.ogg");
-    
+Bullet.prototype.laserAlien = new Audio("sounds/laserAlien.wav");
+Bullet.prototype.laserAlien.volume = 0.2;
+Bullet.prototype.laserPlayer = new Audio("sounds/laserPlayer.wav");
+Bullet.prototype.laserPlayer.volume = 0.2;
+
 // Initial, inheritable, default values
 Bullet.prototype.rotation = 0;
 Bullet.prototype.cx = 200;

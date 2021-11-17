@@ -43,6 +43,9 @@ function Ship(descr) {
 
 Ship.prototype = new Entity();
 
+Ship.prototype.explosionPlayer = new Audio("sounds/explosionPlayer.wav");
+Ship.prototype.explosionPlayer.volume = 0.2;
+
 Ship.prototype.rememberResets = function () {
     // Remember my reset positions
     this.reset_cx = this.cx;
@@ -155,6 +158,7 @@ Ship.prototype.takeBulletHit = function (bullet) {
 
     entityManager.despawnPlayerBullet();
 
+    this.explosionPlayer.play();
     this.sprite.setAnimation("explosion");
     this.isExploding = true;
     this.animationInterval = 0.10 * SECS_TO_NOMINALS

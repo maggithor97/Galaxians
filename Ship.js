@@ -118,12 +118,7 @@ Ship.prototype.update = function (du) {
     }
     // Handle firing
     this.maybeFireBullet();
-
-    // TODO: YOUR STUFF HERE! --- Warp if isColliding, otherwise Register
-    if (this.isColliding()) {
-        return;
-    }
-    
+   
     spatialManager.register(this);
 };
 

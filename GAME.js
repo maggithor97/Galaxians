@@ -171,8 +171,7 @@ function loadSprites() {
             attacking: {
                 size: { w: 14, h: 14 },
                 frames: [[70, 2 + o], [87, 2 + o], [104, 2 + o], 
-                         [121, 2 + o], [138, 2 + o], [155, 2 + o], 
-                         [172, 2 + o], [189, 2 + o]
+                         [121, 2 + o], [138, 2 + o], [155, 2 + o]
                         ]
             },
             explosion: {

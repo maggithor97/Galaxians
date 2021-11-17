@@ -31,6 +31,7 @@ _aliens   : [],
 _aliens_x_position : [],
 _aliens_x_direction : LEFT,
 _flags : 1,
+_alien_grid_types : [],
 _enemy_bullets : [],
 _ships   : [],
 _player_bullet : [],
@@ -47,6 +48,8 @@ _generateAliens : function() {
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
     ];
+
+    this._alien_grid_types = alienGridTypes;
 
     // Fill the _aliens_x_position array with their position
     // This array will then be updated with its x position
@@ -73,7 +76,7 @@ _generateAliens : function() {
                 y : i,
                 type : type - 1,
                 scale : g_scale,
-                isRespawning : true,
+                isRespawning : false,
                 sprite : new Sprite(g_images.sheet, g_scale, g_sprites.aliens[type - 1])
             });
         }
@@ -185,6 +188,16 @@ updateAlienPosition : function(du) {
         }
         this._aliens_x_position[i] = nextX;
     }
+},
+
+// Get the grid that is used to check if neighbouring aliens is alive
+getAlienGrid : function() {
+    return this._alien_grid_types;
+},
+
+// Set value of grid, is used generally to change values to 0 to indicate dead alien 
+setAlienGrid : function(column, row, value) {
+    this._alien_grid_types[row][column] = value;
 },
 
 getAliensDirection : function() {

@@ -97,7 +97,6 @@ Starfield.prototype.render = function (ctx) {
     this.randomizeRGBTimer = 0;
   }
 
-  //util.fillBox(ctx, 0, 0, g_canvas.width, g_canvas.height, "#000000");
   ctx.putImageData(this.sprite, 0, this.cy);
   ctx.putImageData(this.sprite, 0, this.cy - g_canvas.height);
   ctx.putImageData(this.sprite, 0, this.cy + g_canvas.height);

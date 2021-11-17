@@ -131,14 +131,6 @@ Ship.prototype.maybeFireBullet = function () {
     entityManager.spawnPlayerBullet(this.cx, this.cy - this.getRadius() - bulletHeight);
 
     if (keys[this.KEY_FIRE]) {
-    
-        var dX = +Math.sin(this.rotation);
-        var dY = -Math.cos(this.rotation);
-        var launchDist = this.getRadius() * 1.2;
-        
-        var relVel = this.launchVel;
-        var relVelX = dX * relVel;
-        var relVelY = dY * relVel;
 
         entityManager.firePlayerBullet();
     

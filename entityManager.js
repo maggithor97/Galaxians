@@ -169,8 +169,10 @@ despawnPlayerBullet: function() {
 },
 
 firePlayerBullet: function() {
-    Bullet.prototype.laserPlayer.play();
-    this._player_bullet[0].velY = -8;
+    if (this._player_bullet[0] === 0) {
+        Bullet.prototype.laserPlayer.play();
+        this._player_bullet[0].velY = -8;
+    }
 },
 
 // Return the position of the alien at column number [index].

@@ -23,12 +23,12 @@
 - [x] Enemy movement
 
 #### Week 3
-- [ ] Player collision with enemy bullets
-- [ ] Individual enemies attacking
+- [x] Player collision with enemy bullets
+- [x] Individual enemies attacking
 - [x] respawning enemies
-- [ ] Menues
-- [ ] Highscore
-- [ ] Sound effects
+- [x] Menues
+- [x] Highscore
+- [x] Sound effects
 
 
 ### Contribution rules

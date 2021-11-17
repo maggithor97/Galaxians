@@ -75,8 +75,8 @@ findEntityInRange: function(posX, posY, radius) {
         let dSq = util.distSq(posX, posY, l.pos.posX, l.pos.posY);
         let rSq = util.square(radius + l.radius);
 
-        if (l.entity.type == "Ship")
-            console.log(dSq, rSq);
+        //if (l.entity.type == "Ship")
+        //    console.log(dSq, rSq);
 
         //if (dSq < rSq) { return l.entity; }
         if (dSq < rSq) { hit = l.entity; }

@@ -27,6 +27,7 @@ function Alien(descr) {
   this.velY = 0.5;
   this.acceleration = 0;
   this.maxAcceleration = 3;
+  this.sidePush = 2;
   this.velX = 0.1;
   this.accelerationY = 0;
   this.dir = 1;
@@ -206,9 +207,9 @@ Alien.prototype.maybeAttack = function() {
       this.isAttacking = true;
       this.accelerationY = -2;
       this.dir = 1;
-      this.acceleration = this.maxAcceleration;
+      this.acceleration = this.sidePush;
       if(leftNeighboursDead)
-        this.acceleration = - this.maxAcceleration;
+        this.acceleration = - this.sidePush;
         this.dir = -1;
     }
   }

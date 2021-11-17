@@ -123,6 +123,14 @@ Alien.prototype.update = function (du) {
       this.acceleration = - this.maxAcceleration;
 
     this.cx += this.acceleration * du;
+
+    let hitEntity = this.isColliding();
+
+    if (hitEntity && hitEntity.type === "Ship") {
+      //this.kill();
+      this.takeBulletHit({ type: "playerBullet" });
+      hitEntity.takeBulletHit({ type: "enemyBullet" });
+    }
   }
 
   // If enemy is out of bounds reset it

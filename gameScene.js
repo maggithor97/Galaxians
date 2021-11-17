@@ -11,8 +11,7 @@ var g_gameScene = {};
 // It then delegates the game-specific logic to `updateSimulation`
 
 g_gameScene.init = function (firstInit = false) {
-  spatialManager.reset();
-  entityManager.reset();
+
 }
 
 // GAME-SPECIFIC UPDATE LOGIC

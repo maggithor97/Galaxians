@@ -81,6 +81,9 @@ Alien.prototype.takeBulletHit = function (bullet) {
     return;
   }
 
+  let mode = (this.isAttacking) ? "charger" : "convoy";
+  scoreManager.increasePlayerScore(mode, this.spriteType);
+
   this.sprite.setAnimation("explosion");
   this.isExploding = true;
   this.animationInterval = 0.10 * SECS_TO_NOMINALS

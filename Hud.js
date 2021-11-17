@@ -36,9 +36,10 @@ Hud.prototype.init = function (du) {
 };
 
 Hud.prototype.update = function (du) {
+  this.score = scoreManager.getPlayerScore();
+  this.highscore = scoreManager.getHighScore();
   this.lives = entityManager.getShipLives();
   this.flags = entityManager.getFlags();
-  console.log(this.flags);
 };
 
 Hud.prototype.renderScore = function (ctx) {

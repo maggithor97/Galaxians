@@ -203,6 +203,30 @@ getFlags : function() {
     return this._flags;
 },
 
+getAlien : function(type) {
+    let alien = null;
+
+    switch (type) {
+        case 1:
+            alien = this._aliens[16];
+            break;
+        case 2:
+            alien = this._aliens[8];
+            break;
+        case 3:
+            alien = this._aliens[2];
+            break;
+        case 4:
+            alien = this._aliens[0];
+            break;
+        default:
+            alien = null;
+            break;
+    }
+
+    return alien;
+},
+
 getShipCoords : function() {
     return { x: this._ships[0].cx, y: this._ships[0].cy };
 },

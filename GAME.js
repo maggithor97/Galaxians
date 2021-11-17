@@ -3,6 +3,7 @@
 /* jshint browser: true, devel: true, globalstrict: true */
 
 var g_sceneManager = new SceneManager();
+var scoreManager = new ScoreManager({});
 
 /*
 0        1         2         3         4         5         6         7         8
@@ -18,6 +19,19 @@ function initialize() {
 
     g_sceneManager.addScene("menu", g_menuScene);
     g_sceneManager.addScene("game", g_gameScene);
+    g_sceneManager.addScene("gameover", g_gameOverScene);
+
+    g_sceneManager.loadScene("menu");
+
+    scoreManager.addToScoreTable("charger", 200);
+    scoreManager.addToScoreTable("charger", 100);
+    scoreManager.addToScoreTable("charger", 80);
+    scoreManager.addToScoreTable("charger", 60);
+
+    scoreManager.addToScoreTable("convoy", 60);
+    scoreManager.addToScoreTable("convoy", 50);
+    scoreManager.addToScoreTable("convoy", 40);
+    scoreManager.addToScoreTable("convoy", 30);
 
     background.init();
 
@@ -202,6 +216,7 @@ function loadSprites() {
 }
 
 let g_fonts = {};
+let g_font_size = [7 * g_scale * 0.75, 7 * g_scale * 0.75]
 
 function loadFonts() {
     g_fonts.white = {
@@ -213,7 +228,7 @@ function loadFonts() {
         "P": [56, 129], "Q": [65, 129], "R": [74, 129], "S": [83, 129], "T": [92, 129], 
         "U": [101, 129], "V": [110, 129], "W": [119, 129], "X": [128, 129], "Y": [137, 129], 
         "Z": [146, 129], "-": [155, 129],
-        "size": [7 * g_scale, 7 * g_scale]
+        "size": g_font_size
     }
 
     g_fonts.red = {
@@ -225,7 +240,7 @@ function loadFonts() {
         "P": [56, 147], "Q": [65, 147], "R": [74, 147], "S": [83, 147], "T": [92, 147], 
         "U": [101, 147], "V": [110, 147], "W": [119, 147], "X": [128, 147], "Y": [137, 147], 
         "Z": [146, 147], "-": [155, 147],
-        "size": [7 * g_scale, 7 * g_scale]
+        "size": g_font_size
     }
 
     g_fonts.blue = {
@@ -237,7 +252,7 @@ function loadFonts() {
         "P": [56, 165], "Q": [65, 165], "R": [74, 165], "S": [83, 165], "T": [92, 165], 
         "U": [101, 165], "V": [110, 165], "W": [119, 165], "X": [128, 165], "Y": [137, 165], 
         "Z": [146, 165], "-": [155, 165],
-        "size": [7 * g_scale, 7 * g_scale]
+        "size": g_font_size
     }
 }
 
@@ -246,8 +261,6 @@ function preloadDone() {
     loadSprites();
 
     loadFonts();
-
-    console.log(g_fonts);
 
     initialize();
 

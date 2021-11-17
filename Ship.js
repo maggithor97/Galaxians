@@ -97,7 +97,7 @@ Ship.prototype.update = function (du) {
                 // Back to menu.
                 this.extraLives = 0;
                 this.reset();
-                g_sceneManager.restart();
+                g_sceneManager.loadScene("gameover");
             }
 
             this.isRespawning = true;

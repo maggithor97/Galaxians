@@ -45,6 +45,11 @@ function Alien(descr) {
 
 Alien.prototype = new Entity();
 
+Alien.prototype.explosionAlien = new Audio("sounds/explosionAlien.wav");
+Alien.prototype.explosionAlien.volume = 0.2;
+Alien.prototype.attackingAlien = new Audio("sounds/attackingAlien.wav");
+Alien.prototype.attackingAlien.volume = 0.2;
+
 Alien.prototype.update = function (du) {
   spatialManager.unregister(this);
 
@@ -76,6 +81,7 @@ Alien.prototype.update = function (du) {
     this.maybeAttack();
 
   if (this.isAttacking) {
+    this.attackingAlien.play();
     // Animation, if the attack animation has gone through all frames ONCE
     // the sprite should be rotated by 90 degrees, and then played again ONCE
     if (this.sprite.frame === 0 && this.loopCount == 1){
@@ -117,6 +123,14 @@ Alien.prototype.update = function (du) {
       this.acceleration = - this.maxAcceleration;
 
     this.cx += this.acceleration * du;
+
+    let hitEntity = this.isColliding();
+
+    if (hitEntity && hitEntity.type === "Ship") {
+      //this.kill();
+      this.takeBulletHit({ type: "playerBullet" });
+      hitEntity.takeBulletHit({ type: "enemyBullet" });
+    }
   }
 
   // If enemy is out of bounds reset it
@@ -163,6 +177,7 @@ Alien.prototype.takeBulletHit = function (bullet) {
   let mode = (this.isAttacking) ? "charger" : "convoy";
   scoreManager.increasePlayerScore(mode, this.spriteType);
 
+  this.explosionAlien.play();
   this.sprite.setAnimation("explosion");
   this.isExploding = true;
   this.isAttacking = false;

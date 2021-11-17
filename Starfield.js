@@ -33,8 +33,10 @@ function Starfield(descr) {
 };
 
 Starfield.prototype.getRGB = function () {
-  let rgbs = [0, 0, 0, 127, 127, 127, 127, 255, 255, 255];
-  return rgbs[util.randRange(0, rgbs.length + 1)];
+  //let rgbs = [0, 0, 0, 127, 127, 127, 127, 255, 255, 255];
+  // reference: https://www.color-hex.com/color-palette/65748
+  let rgbs = [[255, 52, 52], [226, 255, 73], [34, 255, 71], [21, 53, 212]];
+  return rgbs[util.randRange(0, rgbs.length)];
 };
 
 Starfield.prototype.init = function (du) {
@@ -55,12 +57,13 @@ Starfield.prototype.init = function (du) {
   // That is dark, faint or bright star.
   for (let i = 0; i < this.numStars; i++) {
     let rgb = this.getRGB();
+    console.log(rgb);
     let pixel = util.randRange(0, this.numPixels + 1);
     this.stars.push(pixel);
     
-    this.sprite.data[4 * pixel + 0] = rgb;
-    this.sprite.data[4 * pixel + 1] = rgb;
-    this.sprite.data[4 * pixel + 2] = rgb;
+    this.sprite.data[4 * pixel + 0] = rgb[0];
+    this.sprite.data[4 * pixel + 1] = rgb[1];
+    this.sprite.data[4 * pixel + 2] = rgb[2];
     this.sprite.data[4 * pixel + 3] = 255;
   }
 };
@@ -69,9 +72,9 @@ Starfield.prototype.randomizeRGB = function () {
   for (let i = 0; i < this.stars.length; i++) {
     let px = this.stars[i];
     let rgb = this.getRGB();
-    this.sprite.data[4 * px + 0] = rgb;
-    this.sprite.data[4 * px + 1] = rgb;
-    this.sprite.data[4 * px + 2] = rgb;
+    this.sprite.data[4 * px + 0] = rgb[0];
+    this.sprite.data[4 * px + 1] = rgb[1];
+    this.sprite.data[4 * px + 2] = rgb[2];
   }
 };
 

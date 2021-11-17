@@ -181,11 +181,52 @@ updateAlienPosition : function(du) {
     for(let i = 0; i < this._aliens_x_position.length; i++){
         let direction = this.getAliensDirection();
         let nextX = this._aliens_x_position[i] + (velX * direction * du);
-        if (nextX < halfWidth || nextX > g_canvas.width - halfWidth) {
-            this.changeAliensDirection();
-        }
+        //if (nextX < halfWidth + 30 || nextX > g_canvas.width - halfWidth - 30) {
+        //    this.changeAliensDirection();
+        //}
         this._aliens_x_position[i] = nextX;
     }
+
+    // Check which column is closest to the left and right
+    let alienGrid = this.getAlienGrid();
+    let closestLeft = alienGrid[0].length;
+    let closestRight = 0;
+    for(let col = 0; col < alienGrid[0].length; col++){
+        let found = false;
+        for(let row = 0; row < alienGrid.length; row++){
+            if(alienGrid[row][col] != 0){
+                found = true;
+                break;
+            }
+        }
+        if(found == true){
+            closestLeft = col;
+            break;
+        }
+    }
+    for(let col = alienGrid[0].length - 1; col >= 0; col--){
+        let found = false;
+        for(let row = 0; row < alienGrid.length; row++){
+            if(alienGrid[row][col] != 0){
+                found = true;
+                break;
+            }
+        }
+        if(found == true){
+            closestRight = col;
+            break;
+        }
+    }
+
+    // If the enemy most left or most right is close to the border, change enemy directions
+    let alienLeftX = this._aliens_x_position[closestLeft];
+    let alienRightX = this._aliens_x_position[closestRight]; 
+    if(alienLeftX < 25 || alienRightX > g_canvas.width - 25)
+        this.changeAliensDirection();
+    //if (nextX < halfWidth + 30 || nextX > g_canvas.width - halfWidth - 30) {
+    //    this.changeAliensDirection();
+    //}
+
 },
 
 // Get the grid that is used to check if neighbouring aliens is alive

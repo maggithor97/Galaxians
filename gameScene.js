@@ -20,7 +20,7 @@ g_gameScene.init = function (firstInit = false) {
 g_gameScene.updateSimulation = function (du) {
   background.update(du);
   entityManager.update(du);
-
+  hud.update(du);
   // Prevent perpetual firing!
   eatKey(Ship.prototype.KEY_FIRE);
 }
@@ -43,4 +43,5 @@ g_gameScene.updateSimulation = function (du) {
 g_gameScene.renderSimulation = function (ctx) {
   background.render(ctx);
   entityManager.render(ctx);
+  hud.render(ctx);
 }

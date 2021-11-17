@@ -4,8 +4,6 @@ g_menuScene = {};
 
 g_menuScene.init = function() {
   scoreManager.reset();
-  spatialManager.reset();
-  entityManager.reset();
   
   this.animationInterval = SECS_TO_NOMINALS;
   this.animationTimer = 0;

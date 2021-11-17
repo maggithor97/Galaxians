@@ -220,8 +220,9 @@ updateAlienPosition : function(du) {
 
     // If the enemy most left or most right is close to the border, change enemy directions
     let alienLeftX = this._aliens_x_position[closestLeft];
-    let alienRightX = this._aliens_x_position[closestRight]; 
-    if(alienLeftX < 25 || alienRightX > g_canvas.width - 25)
+    let alienRightX = this._aliens_x_position[closestRight];
+    let border = 50; 
+    if(alienLeftX < border || alienRightX > g_canvas.width - border)
         this.changeAliensDirection();
     //if (nextX < halfWidth + 30 || nextX > g_canvas.width - halfWidth - 30) {
     //    this.changeAliensDirection();

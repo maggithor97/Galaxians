@@ -169,7 +169,7 @@ despawnPlayerBullet: function() {
 },
 
 firePlayerBullet: function() {
-    if (this._player_bullet[0] === 0) {
+    if (this._player_bullet[0].velY === 0) {
         Bullet.prototype.laserPlayer.play();
         this._player_bullet[0].velY = -8;
     }

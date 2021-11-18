@@ -41,7 +41,8 @@ g_menuScene.renderSimulation = function (ctx) {
   }
 
   if (this.animationTimer > 6 * this.animationInterval) {
-    let alien = entityManager.getAlien(4).sprite.drawCentredAt(ctx, 90, 290);
+    //let alien = entityManager.getAlien(4).sprite.drawCentredAt(ctx, 90, 290);
+    drawCentredAt(ctx, 90, 290, 4);
     
     Text(ctx, "60", 145, 290, g_fonts.blue);
     Text(ctx, "200", 240, 290, g_fonts.blue);
@@ -51,7 +52,8 @@ g_menuScene.renderSimulation = function (ctx) {
 
   if (this.animationTimer > 7 * this.animationInterval) {
 
-    let alien = entityManager.getAlien(3).sprite.drawCentredAt(ctx, 90, 320);
+    //let alien = entityManager.getAlien(3).sprite.drawCentredAt(ctx, 90, 320);
+    drawCentredAt(ctx, 90, 320, 3);
     
     Text(ctx, "50", 145, 320, g_fonts.blue);
     Text(ctx, "100", 240, 320, g_fonts.blue);
@@ -59,7 +61,8 @@ g_menuScene.renderSimulation = function (ctx) {
   }
 
   if (this.animationTimer > 8 * this.animationInterval) {
-    let alien = entityManager.getAlien(2).sprite.drawCentredAt(ctx, 90, 350);
+    //let alien = entityManager.getAlien(2).sprite.drawCentredAt(ctx, 90, 350);
+    drawCentredAt(ctx, 90, 350, 2);
     
     Text(ctx, "40", 145, 350, g_fonts.blue);
     Text(ctx, "80", 250, 350, g_fonts.blue);
@@ -68,7 +71,8 @@ g_menuScene.renderSimulation = function (ctx) {
   }
 
   if (this.animationTimer > 9 * this.animationInterval) {
-    let alien = entityManager.getAlien(1).sprite.drawCentredAt(ctx, 90, 380);
+    //let alien = entityManager.getAlien(1).sprite.drawCentredAt(ctx, 90, 380);
+    drawCentredAt(ctx, 90, 380, 1);
     
     Text(ctx, "30", 145, 380, g_fonts.blue);
     Text(ctx, "60", 250, 380, g_fonts.blue);
@@ -83,21 +87,24 @@ g_menuScene.renderSimulation = function (ctx) {
   }
 
   hud.render(ctx);
-  /*
+
+};
+
+function drawCentredAt(ctx, cx, cy, alienType) {
+  let scale = g_scale;
+
   ctx.save();
-
-  ctx.font = '48px monospace';
-  let title = "Galaxian";
-  let textMeasure = ctx.measureText(title);
-  let x = (g_canvas.width - textMeasure.width) / 2;
-  ctx.fillText(title, x, 150);
-
-  ctx.font = "16px monospace";
-  let subtitle = "press SPACE to play";
-  textMeasure = ctx.measureText(subtitle);
-  x = (g_canvas.width - textMeasure.width) / 2;
-  ctx.fillText(subtitle, x, 200);
+  ctx.translate(cx, cy);
+  ctx.scale(scale, scale);
+  
+  const {w, h} = g_sprites.aliens[alienType - 1].default.size;
+  let [sx, sy] = g_sprites.aliens[alienType - 1].default.frames[0];
+  
+  ctx.drawImage(g_images.sheet, 
+                  sx, sy, 
+                  w, h, 
+                  -w/2, -h/2,
+                  w, h);
   
   ctx.restore();
-  */
-};
+}

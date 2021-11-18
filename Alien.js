@@ -196,6 +196,11 @@ Alien.prototype.maybeFireBullet = function () {
 // Checks the condition for initiatng an attack
 // The conditions are: The alien should not have any neighbours in one direction
 Alien.prototype.maybeAttack = function() {
+  // If player is dead, stop attacking
+  let ship = entityManager.getShip();
+  if(typeof ship !== 'undefined' && ship.isRespawning)
+    return;
+  
   let alienGrid = entityManager.getAlienGrid();
   let leftNeighboursDead = true;
   let rightNeighboursDead = true;

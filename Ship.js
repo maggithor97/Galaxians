@@ -174,7 +174,10 @@ Ship.prototype.halt = function () {
 };
 
 Ship.prototype.render = function (ctx) {
-    if (this.isRespawning) return;
+    if (this.isRespawning) {
+        Text(ctx, "READY", 180, 350, g_fonts.red);
+        return;
+    }
 
     this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 

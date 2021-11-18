@@ -3,10 +3,13 @@ function ScoreManager(descr) {
       this[property] = descr[property];
   }
 
+  this.bossScoreRange = [150, 200, 300, 800];
+
   this.scoreTable = {
     "charger": [],
     "convoy": []
   };
+
   this.playerScore = 0;
   this.highScore = localStorage.getItem("highscore") || 0;
 }
@@ -17,6 +20,11 @@ ScoreManager.prototype.addToScoreTable = function (mode, value) {
 
 ScoreManager.prototype.getFromScoreTable = function (mode, type) {
   return this.scoreTable[mode][type];
+}
+
+ScoreManager.prototype.setRandomBossScore = function () {
+  let index = util.randRange(0, 4);
+  this.scoreTable.charger[3] = this.bossScoreRange[index];
 }
 
 ScoreManager.prototype.increasePlayerScore = function (mode, type) {

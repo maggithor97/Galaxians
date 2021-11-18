@@ -72,7 +72,6 @@ Alien.prototype.update = function (du) {
     this.cx = entityManager.getAlienPosition(this.column);
   // Updating y position
   if(this.cy < this.originalY){
-    //this.cy += this.velY * du;
     nextY = this.cy + (this.velY * du);
   }
 
@@ -100,7 +99,6 @@ Alien.prototype.update = function (du) {
     
     this.maybeFireBullet();
     this.velY = 1.5;
-    //nextY = this.cy + (this.velY * du);
 
     this.accelerationY += 0.1;
     if(this.accelerationY > 1.5)

@@ -22,29 +22,21 @@ var spatialManager = {
 
 _nextSpatialID : 1, // make all valid IDs non-falsey (i.e. don't start at 0)
 
-//_entities : [],
 _entities : new Map(),
-
-// "PRIVATE" METHODS
-//
-// <none yet>
-
 
 // PUBLIC METHODS
 
 getNewSpatialID : function() {
 
-    // TODO: YOUR STUFF HERE!
     let id = this._nextSpatialID;
     this._nextSpatialID += 1;
     return id;
 },
 
 register: function(entity) {
-    //var pos = entity.getPos();
+
     var spatialID = entity.getSpatialID();
     
-    // TODO: YOUR STUFF HERE!
     this._entities.set(spatialID, {
         pos : entity.getPos(),
         radius : entity.getRadius(),
@@ -55,7 +47,6 @@ register: function(entity) {
 unregister: function(entity) {
     var spatialID = entity.getSpatialID();
 
-    // TODO: YOUR STUFF HERE!
     this._entities.delete(spatialID);
 },
 
@@ -65,7 +56,6 @@ reset: function() {
 
 findEntityInRange: function(posX, posY, radius) {
 
-    // TODO: YOUR STUFF HERE!
     let iter = this._entities.entries();
     let entity = iter.next();
     let hit = null;
@@ -75,10 +65,6 @@ findEntityInRange: function(posX, posY, radius) {
         let dSq = util.distSq(posX, posY, l.pos.posX, l.pos.posY);
         let rSq = util.square(radius + l.radius);
 
-        //if (l.entity.type == "Ship")
-        //    console.log(dSq, rSq);
-
-        //if (dSq < rSq) { return l.entity; }
         if (dSq < rSq) { hit = l.entity; }
 
         entity = iter.next();
@@ -88,8 +74,6 @@ findEntityInRange: function(posX, posY, radius) {
 },
 
 render: function(ctx) {
-    //var oldStyle = ctx.strokeStyle;
-    //ctx.strokeStyle = "red";
 
     let iter = this._entities.entries();
 
@@ -103,16 +87,9 @@ render: function(ctx) {
         util.strokeCircle(ctx, l.pos.posX, l.pos.posY, l.radius);
         entity = iter.next();
     }
-    /*
-    for (var ID in this._entities) {
-        var e = this._entities[ID];
-        console.log(ID, e);
-        if (e) util.strokeCircle(ctx, e.posX, e.posY, e.radius);
-    }
-    */
     
     ctx.restore();
-    //ctx.strokeStyle = oldStyle;
+
 }
 
 }

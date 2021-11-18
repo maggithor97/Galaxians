@@ -20,10 +20,10 @@ function Sprite(image, scale, sheetCoords) {
 
     this.scale = scale;
     this.setAnimation("default");
-    //this.activeAnimation = sheetCoords.default;
+
     this.width = this.activeAnimation.size.w * this.scale;
     this.height = this.activeAnimation.size.h * this.scale;
-    //this.numFrames = this.activeAnimation.frames.length;
+
 }
 
 Sprite.prototype.scale = g_scale;

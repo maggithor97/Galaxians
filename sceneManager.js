@@ -8,7 +8,6 @@ SceneManager.prototype.scenes = {};
 SceneManager.prototype.activeScene = "menu";
 
 SceneManager.prototype.addScene = function (id, scene) {
-  //this.scenes.push(scene);
   this.scenes[id] = scene;
 }
 
@@ -22,6 +21,5 @@ SceneManager.prototype.loadScene = function (id, argsForInit = false) {
 }
 
 SceneManager.prototype.restart = function () {
-  //this.activeScene = "menu";
   this.loadScene("menu");
 }

@@ -99,10 +99,6 @@ Bullet.prototype.getRadius = function () {
 
 Bullet.prototype.takeBulletHit = function () {
     this.kill();
-    
-    // Make a noise when I am zapped by another bullet
-    this.zappedSound.volume = 0.2;
-    this.zappedSound.play();
 };
 
 Bullet.prototype.render = function (ctx) {

@@ -189,9 +189,7 @@ updateAlienPosition : function(du) {
     for(let i = 0; i < this._aliens_x_position.length; i++){
         let direction = this.getAliensDirection();
         let nextX = this._aliens_x_position[i] + (velX * direction * du);
-        //if (nextX < halfWidth + 30 || nextX > g_canvas.width - halfWidth - 30) {
-        //    this.changeAliensDirection();
-        //}
+
         this._aliens_x_position[i] = nextX;
     }
 
@@ -232,9 +230,6 @@ updateAlienPosition : function(du) {
     let border = 50; 
     if(alienLeftX < border || alienRightX > g_canvas.width - border)
         this.changeAliensDirection();
-    //if (nextX < halfWidth + 30 || nextX > g_canvas.width - halfWidth - 30) {
-    //    this.changeAliensDirection();
-    //}
 
 },
 
@@ -338,7 +333,6 @@ generateShip : function() {
 },
 
 resetShip: function() {
-    //this._forEachOf(this._ships, Ship.prototype.reset);
     this._ships = [];
     this.generateShip();
 },

@@ -241,6 +241,7 @@ getPhaseProbability : function () {
 // Update game phase depending on amount of enemies on screen
 // 48 enemies in total, 5 phases in total : 0 indexed
 updatePhase : function () {
+
     if(this._aliens.length > 40)
         this._phase = 0;
     else if(this._aliens.length > 30)
@@ -302,6 +303,10 @@ getAlien : function(type) {
     }
 
     return alien;
+},
+
+getShip : function () {
+    return this._ships[0];
 },
 
 getShipCoords : function() {

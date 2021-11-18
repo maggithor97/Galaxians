@@ -33,7 +33,7 @@ function Ship(descr) {
     this.isExploding = false;
     this.isRespawning = false;
     
-    this.respawnInterval = 1 * SECS_TO_NOMINALS;
+    this.respawnInterval = 6 * SECS_TO_NOMINALS;
     this.respawnTimer = 0;
 
     this.animationInterval = 0.25 * SECS_TO_NOMINALS;

@@ -53,7 +53,7 @@ g_menuScene.renderSimulation = function (ctx) {
   if (this.animationTimer > 7 * this.animationInterval) {
 
     //let alien = entityManager.getAlien(3).sprite.drawCentredAt(ctx, 90, 320);
-    drawCentredAt(ctx, 90, 320, 3);
+    drawCentredAt(ctx, 90, 320, 1);
     
     Text(ctx, "50", 145, 320, g_fonts.blue);
     Text(ctx, "100", 240, 320, g_fonts.blue);
@@ -72,7 +72,7 @@ g_menuScene.renderSimulation = function (ctx) {
 
   if (this.animationTimer > 9 * this.animationInterval) {
     //let alien = entityManager.getAlien(1).sprite.drawCentredAt(ctx, 90, 380);
-    drawCentredAt(ctx, 90, 380, 1);
+    drawCentredAt(ctx, 90, 380, 3);
     
     Text(ctx, "30", 145, 380, g_fonts.blue);
     Text(ctx, "60", 250, 380, g_fonts.blue);

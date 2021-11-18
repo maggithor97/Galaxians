@@ -23,15 +23,15 @@ function initialize() {
 
     g_sceneManager.loadScene("menu");
 
-    scoreManager.addToScoreTable("charger", 200);
     scoreManager.addToScoreTable("charger", 100);
     scoreManager.addToScoreTable("charger", 80);
     scoreManager.addToScoreTable("charger", 60);
+    scoreManager.addToScoreTable("charger", 200);
 
-    scoreManager.addToScoreTable("convoy", 60);
     scoreManager.addToScoreTable("convoy", 50);
     scoreManager.addToScoreTable("convoy", 40);
     scoreManager.addToScoreTable("convoy", 30);
+    scoreManager.addToScoreTable("convoy", 60);
 
     background.init();
 

@@ -15,6 +15,16 @@
 **Pause:** P
 **Cheat:** K (kill one alien each keypress)
 
+### Special features:
+After an enemy has done an attack run and goes off screen without being killed, it will then from the top of the screen move back to its original position in the enemy grid.
+
+
+The frequency of enemy aliens commencing attack runs is based on phases, and the phases are based on how many aliens are left alive. The fewer enemies left, the higher the probability of aliens attacking. 
+
+
+Aliens are animated in a wave pattern, so each column is on the same frame and each column is then offset by one next to each other’s.
+
+
 ### Timeplan:
 
 #### Week 1:
